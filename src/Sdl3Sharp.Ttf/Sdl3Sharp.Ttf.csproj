@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <LangVersion>preview</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    
+    <PackageId>$(PackageId).Core</PackageId>
+    <Description>$(Description) - "Core" package - just contains the managed binding code</Description>
+
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryUrl>https://github.com/Sdl3Sharp/Sdl3Sharp.Ttf</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <!-- Maybe guard this with a condition to only be included in test builds? -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="Sdl3Sharp.Ttf.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sdl3Sharp.SourceGeneration\Sdl3Sharp.SourceGeneration.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    <PackageReference Include="Sdl3Sharp.Core" Version="$(Sdl3SharpVersion)" />
+  </ItemGroup>
+
+</Project>

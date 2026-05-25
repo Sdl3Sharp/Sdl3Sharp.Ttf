@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="Sdl3Sharp.SourceGeneration/Sdl3Sharp.SourceGeneration.csproj" />
+    <Project Path="Sdl3Sharp.Ttf/Sdl3Sharp.Ttf.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="../tests/Sdl3Sharp.Ttf.Tests/Sdl3Sharp.Ttf.Tests.csproj" Id="5313cbc7-402b-4886-bf3a-c2b7c3c69935" />
+  </Folder>
+</Solution>

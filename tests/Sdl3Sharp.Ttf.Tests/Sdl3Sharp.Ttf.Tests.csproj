@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject> <!-- "IsTestProject" is technically not needed, since this project already references Microsoft.NET.Test.Sdk, but it doesn't hurt to be explicit -->
+
+    <LibffiTestPackageVersion Condition="'$(LibffiTestPackageVersion)' == ''">3.5.2-r.0</LibffiTestPackageVersion>
+    <SdlTestPackageVersion Condition="'$(SdlTestPackageVersion)' == ''">3.4.8-r.0</SdlTestPackageVersion>
+    <UseNativeTestPackage Condition="'$(UseNativeTestPackage)' == ''">true</UseNativeTestPackage>
+    <SdlTtfTestPackageVersion Condition="'$(SdlTtfTestPackageVersion)' == ''">3.2.2-r.0</SdlTtfTestPackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.5.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Sdl3Sharp.Libffi.Test" Version="$(LibffiTestPackageVersion)" />
+    <PackageReference Include="Sdl3Sharp.SDL.Test" Version="$(SdlTestPackageVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(UseNativeTestPackage)' == 'true'">
+    <PackageReference Include="Sdl3Sharp.SDL_ttf.Test" Version="$(SdlTtfTestPackageVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Sdl3Sharp.Ttf\Sdl3Sharp.Ttf.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <Target Name="ValidateNativeTestPackages" BeforeTargets="CollectPackageReferences">
+    <Error Condition="'$(LibffiTestPackageVersion)' == ''" Text="The 'LibffiTestPackageVersion' property must be set." />
+    <Error Condition="'$(SdlTestPackageVersion)' == ''" Text="The 'SdlTestPackageVersion' property must be set." />
+    <Error Condition="'$(UseNativeTestPackage)' == 'true' and '$(SdlTtfTestPackageVersion)' == ''" Text="The 'SdlTtfTestPackageVersion' property must be set when 'UseNativeTestPackage' is true." />
+  </Target>
+
+</Project>
