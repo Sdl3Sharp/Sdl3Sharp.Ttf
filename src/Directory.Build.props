@@ -2,7 +2,7 @@
     <PropertyGroup>        
         <TargetFramework>net10.0</TargetFramework>
 
-        <PackageId>Sdl3Sharp</PackageId>
+        <PackageId>Sdl3Sharp.Ttf</PackageId>
         <VersionPrefix>0.0.1</VersionPrefix>
         <VersionSuffix>test1</VersionSuffix>
         <Description>SDL3#'s SDL TTF bindings</Description>
