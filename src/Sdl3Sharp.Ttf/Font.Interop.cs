@@ -1,8 +1,10 @@
-﻿using Sdl3Sharp.IO;
+﻿using Sdl3Sharp.Internal;
+using Sdl3Sharp.IO;
 using Sdl3Sharp.SourceGeneration;
 using Sdl3Sharp.Ttf.Internal.Interop;
 using Sdl3Sharp.Video;
 using Sdl3Sharp.Video.Coloring;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using CBool = Sdl3Sharp.Internal.Interop.CBool;
@@ -82,7 +84,7 @@ partial class Font
 	/// Creates a copy of an existing font
 	/// </summary>
 	/// <param name="existing_font">The font to copy</param>
-	/// <returns>Returns a valid <see href="https://wiki.libsdl.org/SDL3_ttf/TTF_CopyFont">TTF_Font</see>, or NULL on failure; call SDL_GetError() for more information.</returns>
+	/// <returns>Returns a valid <see href="https://wiki.libsdl.org/SDL3_ttf/TTF_CopyFont">TTF_Font</see>, or NULL on failure; call SDL_GetError() for more information</returns>
 	/// <remarks>
 	/// <para>
 	/// The copy will be distinct from the original, but will share the font file and have the same size and style as the original.
@@ -157,6 +159,8 @@ partial class Font
 	[NativeImportFunction<Library>(CallConvs = [typeof(CallConvCdecl)])]
 	internal unsafe static partial int TTF_GetFontAscent(TTF_Font* font);
 
+#if SDL_TTF3_4_0_OR_GREATER
+
 	/// <summary>
 	/// Gets the additional character spacing in pixels to be applied between any two rendered characters
 	/// </summary>
@@ -173,6 +177,8 @@ partial class Font
 	/// <seealso href="https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontCharSpacing">TTF_GetFontCharSpacing</seealso>
 	[NativeImportFunction<Library>(CallConvs = [typeof(CallConvCdecl)])]
 	internal unsafe static partial int TTF_GetFontCharSpacing(TTF_Font* font);
+
+#endif
 
 	/// <summary>
 	/// Queries the offset from the baseline to the bottom of a font
@@ -421,6 +427,24 @@ partial class Font
 	/// <seealso href="https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontStyleName">TTF_GetFontStyleName</seealso>
 	[NativeImportFunction<Library>(CallConvs = [typeof(CallConvCdecl)])]
 	internal unsafe static partial byte* TTF_GetFontStyleName(TTF_Font* font);
+
+#if SDL_TTF3_2_2_OR_GREATER
+
+	/// <summary>
+	/// Queries a font's weight, in terms of the lightness/heaviness of the strokes
+	/// </summary>
+	/// <param name="font">The font to query.</param>
+	/// <returns>Returns the font's current weight</returns>
+	/// <remarks>
+	/// <para>
+	/// This function should be called on the thread that created the font.
+	/// </para>
+	/// </remarks>
+	/// <seealso href="https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontWeight">TTF_GetFontWeight</seealso>
+	[NativeImportFunction<Library>(CallConvs = [typeof(CallConvCdecl)])]
+	internal unsafe static partial FontWeight TTF_GetFontWeight(TTF_Font* font);
+
+#endif
 
 	/// <summary>
 	/// Queries a font's current wrap alignment option
@@ -1085,6 +1109,8 @@ partial class Font
 	[NativeImportFunction<Library>(CallConvs = [typeof(CallConvCdecl)])]
 	internal unsafe static partial Surface.SDL_Surface* TTF_RenderText_Solid_Wrapped(TTF_Font* font, byte* text, nuint length, Color<byte> fg, int wrap_width);
 
+#if SDL_TTF3_4_0_OR_GREATER
+
 	/// <summary>
 	/// Sets additional space in pixels to be applied between any two rendered characters
 	/// </summary>
@@ -1108,6 +1134,8 @@ partial class Font
 	/// <seealso href="https://wiki.libsdl.org/SDL3_ttf/TTF_SetFontCharSpacing">TTF_SetFontCharSpacing</seealso>
 	[NativeImportFunction<Library>(CallConvs = [typeof(CallConvCdecl)])]
 	internal unsafe static partial CBool TTF_SetFontCharSpacing(TTF_Font* font, int spacing);
+
+#endif
 
 	/// <summary>
 	/// Sets the direction to be used for text shaping by a font

@@ -1,4 +1,6 @@
-﻿namespace Sdl3Sharp.Ttf;
+﻿#if SDL_TTF3_2_2_OR_GREATER
+
+namespace Sdl3Sharp.Ttf;
 
 /// <summary>
 /// Represents the weight of a font, in terms of the lightness or heaviness of the strokes
@@ -40,3 +42,5 @@ public enum FontWeight : int
 	/// <summary>Extra-black font weight (950)</summary>
 	ExtraBlack = 950,
 }
+
+#endif

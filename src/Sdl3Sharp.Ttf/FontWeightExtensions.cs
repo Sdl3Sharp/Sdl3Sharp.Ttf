@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿#if SDL_TTF3_2_2_OR_GREATER
+
+using System.Runtime.CompilerServices;
 
 namespace Sdl3Sharp.Ttf;
 
@@ -24,3 +26,5 @@ public static class FontWeightExtensions
 		public static FontWeight Custom(int weight) => unchecked((FontWeight)weight);
 	}
 }
+
+#endif
