@@ -17,6 +17,9 @@ partial class Font
 	[StructLayout(LayoutKind.Sequential, Size = 0)]
 	internal readonly struct TTF_Font;
 
+	[FormattedConstant(SdlErrorHelper.ParameterInvalidErrorFormat, nameof(font))]
+	private unsafe static partial ReadOnlySpan<byte> GetInvalidFontErrorMessage(TTF_Font* font = default);
+
 	/// <summary>
 	/// Adds a fallback font
 	/// </summary>
@@ -533,7 +536,7 @@ partial class Font
 	/// <summary>
 	/// Gets the script used by a 32-bit codepoint
 	/// </summary>
-	/// <param name="ch">The character code to check.</param>
+	/// <param name="ch">The character code to check</param>
 	/// <returns>Returns an <see href="https://unicode.org/iso15924/iso15924-codes.html">ISO 15924 code</see> on success, or 0 on failure; call SDL_GetError() for more information</returns>
 	/// <seealso href="https://wiki.libsdl.org/SDL3_ttf/TTF_GetGlyphScript">TTF_GetGlyphScript</seealso>
 	[NativeImportFunction<Library>(CallConvs = [typeof(CallConvCdecl)])]

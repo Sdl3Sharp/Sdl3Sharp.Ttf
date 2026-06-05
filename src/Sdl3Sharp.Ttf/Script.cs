@@ -1,676 +1,679 @@
 ﻿namespace Sdl3Sharp.Ttf;
 
+/// <summary>
+/// Represents an <see href="https://unicode.org/iso15924/iso15924-codes.html">ISO 15924 script</see> 
+/// </summary>
 public enum Script : uint
 {
 	/// <summary>Adlam</summary>
-	Adlam = 166,
+	Adlam = (byte)'A' << 24 | (byte)'d' << 16 | (byte)'l' << 8 | (byte)'m',
 
 	/// <summary>Afaka</summary>
-	Afaka = 439,
+	Afaka = (byte)'A' << 24 | (byte)'f' << 16 | (byte)'a' << 8 | (byte)'k',
 
 	/// <summary>Caucasian Albanian</summary>
-	CaucasianAlbanian = 239,
+	CaucasianAlbanian = (byte)'A' << 24 | (byte)'g' << 16 | (byte)'h' << 8 | (byte)'b',
 
 	/// <summary>Ahom, Tai Ahom</summary>
-	Ahom = 338,
+	Ahom = (byte)'A' << 24 | (byte)'h' << 16 | (byte)'o' << 8 | (byte)'m',
 
 	/// <summary>Arabic</summary>
-	Arabic = 160,
+	Arabic = (byte)'A' << 24 | (byte)'r' << 16 | (byte)'a' << 8 | (byte)'b',
 
 	/// <summary>Arabic (Nastaliq variant)</summary>
-	ArabicNastaliq = 161,
+	ArabicNastaliq = (byte)'A' << 24 | (byte)'r' << 16 | (byte)'a' << 8 | (byte)'n',
 
 	/// <summary>Imperial Aramaic</summary>
-	ImperialAramaic = 124,
+	ImperialAramaic = (byte)'A' << 24 | (byte)'r' << 16 | (byte)'m' << 8 | (byte)'i',
 
 	/// <summary>Armenian</summary>
-	Armenian = 230,
+	Armenian = (byte)'A' << 24 | (byte)'r' << 16 | (byte)'m' << 8 | (byte)'n',
 
 	/// <summary>Avestan</summary>
-	Avestan = 134,
+	Avestan = (byte)'A' << 24 | (byte)'v' << 16 | (byte)'s' << 8 | (byte)'t',
 
 	/// <summary>Balinese</summary>
-	Balinese = 360,
+	Balinese = (byte)'B' << 24 | (byte)'a' << 16 | (byte)'l' << 8 | (byte)'i',
 
 	/// <summary>Bamum</summary>
-	Bamum = 435,
+	Bamum = (byte)'B' << 24 | (byte)'a' << 16 | (byte)'m' << 8 | (byte)'u',
 
 	/// <summary>Bassa Vah</summary>
-	BassaVah = 259,
+	BassaVah = (byte)'B' << 24 | (byte)'a' << 16 | (byte)'s' << 8 | (byte)'s',
 
 	/// <summary>Batak</summary>
-	Batak = 365,
+	Batak = (byte)'B' << 24 | (byte)'a' << 16 | (byte)'t' << 8 | (byte)'k',
 
 	/// <summary>Bengali (Bangla)</summary>
-	Bengali = 325,
+	Bengali = (byte)'B' << 24 | (byte)'e' << 16 | (byte)'n' << 8 | (byte)'g',
 
 	/// <summary>Beria Erfe</summary>
-	BeriaErfe = 258,
+	BeriaErfe = (byte)'B' << 24 | (byte)'e' << 16 | (byte)'r' << 8 | (byte)'f',
 
 	/// <summary>Bhaiksuki</summary>
-	Bhaiksuki = 334,
+	Bhaiksuki = (byte)'B' << 24 | (byte)'h' << 16 | (byte)'k' << 8 | (byte)'s',
 
 	/// <summary>Blissymbols</summary>
-	Blissymbols = 550,
+	Blissymbols = (byte)'B' << 24 | (byte)'l' << 16 | (byte)'i' << 8 | (byte)'s',
 
 	/// <summary>Bopomofo</summary>
-	Bopomofo = 285,
+	Bopomofo = (byte)'B' << 24 | (byte)'o' << 16 | (byte)'p' << 8 | (byte)'o',
 
 	/// <summary>Brahmi</summary>
-	Brahmi = 300,
+	Brahmi = (byte)'B' << 24 | (byte)'r' << 16 | (byte)'a' << 8 | (byte)'h',
 
 	/// <summary>Braille</summary>
-	Braille = 570,
+	Braille = (byte)'B' << 24 | (byte)'r' << 16 | (byte)'a' << 8 | (byte)'i',
 
 	/// <summary>Buginese</summary>
-	Buginese = 367,
+	Buginese = (byte)'B' << 24 | (byte)'u' << 16 | (byte)'g' << 8 | (byte)'i',
 
 	/// <summary>Buhid</summary>
-	Buhid = 372,
+	Buhid = (byte)'B' << 24 | (byte)'u' << 16 | (byte)'h' << 8 | (byte)'d',
 
 	/// <summary>Chakma</summary>
-	Chakma = 349,
+	Chakma = (byte)'C' << 24 | (byte)'a' << 16 | (byte)'k' << 8 | (byte)'m',
 
 	/// <summary>Unified Canadian Aboriginal Syllabics</summary>
-	CanadianAboriginal = 440,
+	CanadianAboriginal = (byte)'C' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'s',
 
 	/// <summary>Carian</summary>
-	Carian = 201,
+	Carian = (byte)'C' << 24 | (byte)'a' << 16 | (byte)'r' << 8 | (byte)'i',
 
 	/// <summary>Cham</summary>
-	Cham = 358,
+	Cham = (byte)'C' << 24 | (byte)'h' << 16 | (byte)'a' << 8 | (byte)'m',
 
 	/// <summary>Cherokee</summary>
-	Cherokee = 445,
+	Cherokee = (byte)'C' << 24 | (byte)'h' << 16 | (byte)'e' << 8 | (byte)'r',
 
 	/// <summary>Chisoi</summary>
-	Chisoi = 298,
+	Chisoi = (byte)'C' << 24 | (byte)'h' << 16 | (byte)'i' << 8 | (byte)'s',
 
 	/// <summary>Chorasmian</summary>
-	Chorasmian = 109,
+	Chorasmian = (byte)'C' << 24 | (byte)'h' << 16 | (byte)'r' << 8 | (byte)'s',
 
 	/// <summary>Cirth</summary>
-	Cirth = 291,
+	Cirth = (byte)'C' << 24 | (byte)'i' << 16 | (byte)'r' << 8 | (byte)'t',
 
 	/// <summary>Coptic</summary>
-	Coptic = 204,
+	Coptic = (byte)'C' << 24 | (byte)'o' << 16 | (byte)'p' << 8 | (byte)'t',
 
 	/// <summary>Cypro-Minoan</summary>
-	CyproMinoan = 402,
+	CyproMinoan = (byte)'C' << 24 | (byte)'p' << 16 | (byte)'m' << 8 | (byte)'n',
 
 	/// <summary>Cypriot syllabary</summary>
-	Cypriot = 403,
+	Cypriot = (byte)'C' << 24 | (byte)'p' << 16 | (byte)'r' << 8 | (byte)'t',
 
 	/// <summary>Cyrillic</summary>
-	Cyrillic = 220,
+	Cyrillic = (byte)'C' << 24 | (byte)'y' << 16 | (byte)'r' << 8 | (byte)'l',
 
 	/// <summary>Cyrillic (Old Church Slavonic variant)</summary>
-	CyrillicOldChurchSlavonic = 221,
+	CyrillicOldChurchSlavonic = (byte)'C' << 24 | (byte)'y' << 16 | (byte)'r' << 8 | (byte)'s',
 
 	/// <summary>Devanagari (Nagari)</summary>
-	Devanagari = 315,
+	Devanagari = (byte)'D' << 24 | (byte)'e' << 16 | (byte)'v' << 8 | (byte)'a',
 
 	/// <summary>Dives Akuru</summary>
-	DivesAkuru = 342,
+	DivesAkuru = (byte)'D' << 24 | (byte)'i' << 16 | (byte)'a' << 8 | (byte)'k',
 
 	/// <summary>Dogra</summary>
-	Dogra = 328,
+	Dogra = (byte)'D' << 24 | (byte)'o' << 16 | (byte)'g' << 8 | (byte)'r',
 
 	/// <summary>Deseret (Mormon)</summary>
-	Deseret = 250,
+	Deseret = (byte)'D' << 24 | (byte)'s' << 16 | (byte)'r' << 8 | (byte)'t',
 
 	/// <summary>Duployan shorthand, Duployan stenography</summary>
-	Duployan = 755,
+	Duployan = (byte)'D' << 24 | (byte)'u' << 16 | (byte)'p' << 8 | (byte)'l',
 
 	/// <summary>Egyptian demotic</summary>
-	EgyptianDemotic = 70,
+	EgyptianDemotic = (byte)'E' << 24 | (byte)'g' << 16 | (byte)'y' << 8 | (byte)'d',
 
 	/// <summary>Egyptian hieratic</summary>
-	EgyptianHieratic = 60,
+	EgyptianHieratic = (byte)'E' << 24 | (byte)'g' << 16 | (byte)'y' << 8 | (byte)'h',
 
 	/// <summary>Egyptian hieroglyphs</summary>
-	EgyptianHieroglyphs = 50,
+	EgyptianHieroglyphs = (byte)'E' << 24 | (byte)'g' << 16 | (byte)'y' << 8 | (byte)'p',
 
 	/// <summary>Elbasan</summary>
-	Elbasan = 226,
+	Elbasan = (byte)'E' << 24 | (byte)'l' << 16 | (byte)'b' << 8 | (byte)'a',
 
 	/// <summary>Elymaic</summary>
-	Elymaic = 128,
+	Elymaic = (byte)'E' << 24 | (byte)'l' << 16 | (byte)'y' << 8 | (byte)'m',
 
 	/// <summary>Ethiopic (Geʻez)</summary>
-	Ethiopic = 430,
+	Ethiopic = (byte)'E' << 24 | (byte)'t' << 16 | (byte)'h' << 8 | (byte)'i',
 
 	/// <summary>Garay</summary>
-	Garay = 164,
+	Garay = (byte)'G' << 24 | (byte)'a' << 16 | (byte)'r' << 8 | (byte)'a',
 
 	/// <summary>Khutsuri (Asomtavruli and Nuskhuri)</summary>
-	Khutsuri = 241,
+	Khutsuri = (byte)'G' << 24 | (byte)'e' << 16 | (byte)'o' << 8 | (byte)'k',
 
 	/// <summary>Georgian (Mkhedruli and Mtavruli)</summary>
-	Georgian = 240,
+	Georgian = (byte)'G' << 24 | (byte)'e' << 16 | (byte)'o' << 8 | (byte)'r',
 
 	/// <summary>Glagolitic</summary>
-	Glagolitic = 225,
+	Glagolitic = (byte)'G' << 24 | (byte)'l' << 16 | (byte)'a' << 8 | (byte)'g',
 
 	/// <summary>Gunjala Gondi</summary>
-	GunjalaGondi = 312,
+	GunjalaGondi = (byte)'G' << 24 | (byte)'o' << 16 | (byte)'n' << 8 | (byte)'g',
 
 	/// <summary>Masaram Gondi</summary>
-	MasaramGondi = 313,
+	MasaramGondi = (byte)'G' << 24 | (byte)'o' << 16 | (byte)'n' << 8 | (byte)'m',
 
 	/// <summary>Gothic</summary>
-	Gothic = 206,
+	Gothic = (byte)'G' << 24 | (byte)'o' << 16 | (byte)'t' << 8 | (byte)'h',
 
 	/// <summary>Grantha</summary>
-	Grantha = 343,
+	Grantha = (byte)'G' << 24 | (byte)'r' << 16 | (byte)'a' << 8 | (byte)'n',
 
 	/// <summary>Greek</summary>
-	Greek = 200,
+	Greek = (byte)'G' << 24 | (byte)'r' << 16 | (byte)'e' << 8 | (byte)'k',
 
 	/// <summary>Gujarati</summary>
-	Gujarati = 320,
+	Gujarati = (byte)'G' << 24 | (byte)'u' << 16 | (byte)'j' << 8 | (byte)'r',
 
 	/// <summary>Gurung Khema</summary>
-	GurungKhema = 397,
+	GurungKhema = (byte)'G' << 24 | (byte)'u' << 16 | (byte)'k' << 8 | (byte)'h',
 
 	/// <summary>Gurmukhi</summary>
-	Gurmukhi = 310,
+	Gurmukhi = (byte)'G' << 24 | (byte)'u' << 16 | (byte)'r' << 8 | (byte)'u',
 
 	/// <summary>Han with Bopomofo (alias for Han + Bopomofo)</summary>
-	HanWithBopomofo = 503,
+	HanWithBopomofo = (byte)'H' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'b',
 
 	/// <summary>Hangul (Hangŭl, Hangeul)</summary>
-	Hangul = 286,
+	Hangul = (byte)'H' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'g',
 
 	/// <summary>Han (Hanzi, Kanji, Hanja)</summary>
-	Han = 500,
+	Han = (byte)'H' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'i',
 
 	/// <summary>Hanunoo (Hanunóo)</summary>
-	Hanunoo = 371,
+	Hanunoo = (byte)'H' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'o',
 
 	/// <summary>Han (Simplified variant)</summary>
-	HanSimplified = 501,
+	HanSimplified = (byte)'H' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'s',
 
 	/// <summary>Han (Traditional variant)</summary>
-	HanTraditional = 502,
+	HanTraditional = (byte)'H' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'t',
 
 	/// <summary>Hatran</summary>
-	Hatran = 127,
+	Hatran = (byte)'H' << 24 | (byte)'a' << 16 | (byte)'t' << 8 | (byte)'r',
 
 	/// <summary>Hebrew</summary>
-	Hebrew = 125,
+	Hebrew = (byte)'H' << 24 | (byte)'e' << 16 | (byte)'b' << 8 | (byte)'r',
 
 	/// <summary>Hiragana</summary>
-	Hiragana = 410,
+	Hiragana = (byte)'H' << 24 | (byte)'i' << 16 | (byte)'r' << 8 | (byte)'a',
 
 	/// <summary>Anatolian Hieroglyphs (Luwian Hieroglyphs, Hittite Hieroglyphs)</summary>
-	AnatolianHieroglyphs = 80,
+	AnatolianHieroglyphs = (byte)'H' << 24 | (byte)'l' << 16 | (byte)'u' << 8 | (byte)'w',
 
 	/// <summary>Pahawh Hmong</summary>
-	PahawhHmong = 450,
+	PahawhHmong = (byte)'H' << 24 | (byte)'m' << 16 | (byte)'n' << 8 | (byte)'g',
 
 	/// <summary>Nyiakeng Puachue Hmong</summary>
-	NyiakengPuachueHmong = 451,
+	NyiakengPuachueHmong = (byte)'H' << 24 | (byte)'m' << 16 | (byte)'n' << 8 | (byte)'p',
 
 	/// <summary>Han (Traditional variant) with Latin (alias for Hant + Latn)</summary>
-	HanTraditionalWithLatin = 504,
+	HanTraditionalWithLatin = (byte)'H' << 24 | (byte)'n' << 16 | (byte)'t' << 8 | (byte)'l',
 
 	/// <summary>Japanese syllabaries (alias for Hiragana + Katakana)</summary>
-	KatakanaOrHiragana = 412,
+	KatakanaOrHiragana = (byte)'H' << 24 | (byte)'r' << 16 | (byte)'k' << 8 | (byte)'t',
 
 	/// <summary>Old Hungarian (Hungarian Runic)</summary>
-	OldHungarian = 176,
+	OldHungarian = (byte)'H' << 24 | (byte)'u' << 16 | (byte)'n' << 8 | (byte)'g',
 
 	/// <summary>Indus (Harappan)</summary>
-	IndusHarappan = 610,
+	IndusHarappan = (byte)'I' << 24 | (byte)'n' << 16 | (byte)'d' << 8 | (byte)'s',
 
 	/// <summary>Old Italic (Etruscan, Oscan, etc.)</summary>
-	OldItalic = 210,
+	OldItalic = (byte)'I' << 24 | (byte)'t' << 16 | (byte)'a' << 8 | (byte)'l',
 
 	/// <summary>Jamo (alias for Jamo subset of Hangul)</summary>
-	Jamo = 284,
+	Jamo = (byte)'J' << 24 | (byte)'a' << 16 | (byte)'m' << 8 | (byte)'o',
 
 	/// <summary>Javanese</summary>
-	Javanese = 361,
+	Javanese = (byte)'J' << 24 | (byte)'a' << 16 | (byte)'v' << 8 | (byte)'a',
 
 	/// <summary>Japanese (alias for Han + Hiragana + Katakana)</summary>
-	Japanese = 413,
+	Japanese = (byte)'J' << 24 | (byte)'p' << 16 | (byte)'a' << 8 | (byte)'n',
 
 	/// <summary>Jurchen</summary>
-	Jurchen = 510,
+	Jurchen = (byte)'J' << 24 | (byte)'u' << 16 | (byte)'r' << 8 | (byte)'c',
 
 	/// <summary>Kayah Li</summary>
-	KayahLi = 357,
+	KayahLi = (byte)'K' << 24 | (byte)'a' << 16 | (byte)'l' << 8 | (byte)'i',
 
 	/// <summary>Katakana</summary>
-	Katakana = 411,
+	Katakana = (byte)'K' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'a',
 
 	/// <summary>Kawi</summary>
-	Kawi = 368,
+	Kawi = (byte)'K' << 24 | (byte)'a' << 16 | (byte)'w' << 8 | (byte)'i',
 
 	/// <summary>Kharoshthi</summary>
-	Kharoshthi = 305,
+	Kharoshthi = (byte)'K' << 24 | (byte)'h' << 16 | (byte)'a' << 8 | (byte)'r',
 
 	/// <summary>Khmer</summary>
-	Khmer = 355,
+	Khmer = (byte)'K' << 24 | (byte)'h' << 16 | (byte)'m' << 8 | (byte)'r',
 
 	/// <summary>Khojki</summary>
-	Khojki = 322,
+	Khojki = (byte)'K' << 24 | (byte)'h' << 16 | (byte)'o' << 8 | (byte)'j',
 
 	/// <summary>Khitan large script</summary>
-	KhitanLarge = 505,
+	KhitanLarge = (byte)'K' << 24 | (byte)'i' << 16 | (byte)'t' << 8 | (byte)'l',
 
 	/// <summary>Khitan small script</summary>
-	KhitanSmall = 288,
+	KhitanSmall = (byte)'K' << 24 | (byte)'i' << 16 | (byte)'t' << 8 | (byte)'s',
 
 	/// <summary>Kannada</summary>
-	Kannada = 345,
+	Kannada = (byte)'K' << 24 | (byte)'n' << 16 | (byte)'d' << 8 | (byte)'a',
 
 	/// <summary>Korean (alias for Hangul + Han)</summary>
-	Korean = 287,
+	Korean = (byte)'K' << 24 | (byte)'o' << 16 | (byte)'r' << 8 | (byte)'e',
 
 	/// <summary>Kpelle</summary>
-	Kpelle = 436,
+	Kpelle = (byte)'K' << 24 | (byte)'p' << 16 | (byte)'e' << 8 | (byte)'l',
 
 	/// <summary>Kirat Rai</summary>
-	KiratRai = 396,
+	KiratRai = (byte)'K' << 24 | (byte)'r' << 16 | (byte)'a' << 8 | (byte)'i',
 
 	/// <summary>Kaithi</summary>
-	Kaithi = 317,
+	Kaithi = (byte)'K' << 24 | (byte)'t' << 16 | (byte)'h' << 8 | (byte)'i',
 
 	/// <summary>Tai Tham (Lanna)</summary>
-	TaiTham = 351,
+	TaiTham = (byte)'L' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'a',
 
 	/// <summary>Lao</summary>
-	Lao = 356,
+	Lao = (byte)'L' << 24 | (byte)'a' << 16 | (byte)'o' << 8 | (byte)'o',
 
 	/// <summary>Latin (Fraktur variant)</summary>
-	LatinFraktur = 217,
+	LatinFraktur = (byte)'L' << 24 | (byte)'a' << 16 | (byte)'t' << 8 | (byte)'f',
 
 	/// <summary>Latin (Gaelic variant)</summary>
-	LatinGaelic = 216,
+	LatinGaelic = (byte)'L' << 24 | (byte)'a' << 16 | (byte)'t' << 8 | (byte)'g',
 
 	/// <summary>Latin</summary>
-	Latin = 215,
+	Latin = (byte)'L' << 24 | (byte)'a' << 16 | (byte)'t' << 8 | (byte)'n',
 
 	/// <summary>Leke</summary>
-	Leke = 364,
+	Leke = (byte)'L' << 24 | (byte)'e' << 16 | (byte)'k' << 8 | (byte)'e',
 
 	/// <summary>Lepcha (Róng)</summary>
-	Lepcha = 335,
+	Lepcha = (byte)'L' << 24 | (byte)'e' << 16 | (byte)'p' << 8 | (byte)'c',
 
 	/// <summary>Limbu</summary>
-	Limbu = 336,
+	Limbu = (byte)'L' << 24 | (byte)'i' << 16 | (byte)'m' << 8 | (byte)'b',
 
 	/// <summary>Linear A</summary>
-	LinearA = 400,
+	LinearA = (byte)'L' << 24 | (byte)'i' << 16 | (byte)'n' << 8 | (byte)'a',
 
 	/// <summary>Linear B</summary>
-	LinearB = 401,
+	LinearB = (byte)'L' << 24 | (byte)'i' << 16 | (byte)'n' << 8 | (byte)'b',
 
 	/// <summary>Lisu (Fraser)</summary>
-	Lisu = 399,
+	Lisu = (byte)'L' << 24 | (byte)'i' << 16 | (byte)'s' << 8 | (byte)'u',
 
 	/// <summary>Loma</summary>
-	Loma = 437,
+	Loma = (byte)'L' << 24 | (byte)'o' << 16 | (byte)'m' << 8 | (byte)'a',
 
 	/// <summary>Lycian</summary>
-	Lycian = 202,
+	Lycian = (byte)'L' << 24 | (byte)'y' << 16 | (byte)'c' << 8 | (byte)'i',
 
 	/// <summary>Lydian</summary>
-	Lydian = 116,
+	Lydian = (byte)'L' << 24 | (byte)'y' << 16 | (byte)'d' << 8 | (byte)'i',
 
 	/// <summary>Mahajani</summary>
-	Mahajani = 314,
+	Mahajani = (byte)'M' << 24 | (byte)'a' << 16 | (byte)'h' << 8 | (byte)'j',
 
 	/// <summary>Makasar</summary>
-	Makasar = 366,
+	Makasar = (byte)'M' << 24 | (byte)'a' << 16 | (byte)'k' << 8 | (byte)'a',
 
 	/// <summary>Mandaic, Mandaean</summary>
-	Mandaic = 140,
+	Mandaic = (byte)'M' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'d',
 
 	/// <summary>Manichaean</summary>
-	Manichaean = 139,
+	Manichaean = (byte)'M' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'i',
 
 	/// <summary>Marchen</summary>
-	Marchen = 332,
+	Marchen = (byte)'M' << 24 | (byte)'a' << 16 | (byte)'r' << 8 | (byte)'c',
 
 	/// <summary>Mayan hieroglyphs</summary>
-	MayanHieroglyphs = 90,
+	MayanHieroglyphs = (byte)'M' << 24 | (byte)'a' << 16 | (byte)'y' << 8 | (byte)'a',
 
 	/// <summary>Medefaidrin (Oberi Okaime, Oberi Ɔkaimɛ)</summary>
-	Medefaidrin = 265,
+	Medefaidrin = (byte)'M' << 24 | (byte)'e' << 16 | (byte)'d' << 8 | (byte)'f',
 
 	/// <summary>Mende Kikakui</summary>
-	MendeKikakui = 438,
+	MendeKikakui = (byte)'M' << 24 | (byte)'e' << 16 | (byte)'n' << 8 | (byte)'d',
 
 	/// <summary>Meroitic Cursive</summary>
-	MeroiticCursive = 101,
+	MeroiticCursive = (byte)'M' << 24 | (byte)'e' << 16 | (byte)'r' << 8 | (byte)'c',
 
 	/// <summary>Meroitic Hieroglyphs</summary>
-	MeroiticHieroglyphs = 100,
+	MeroiticHieroglyphs = (byte)'M' << 24 | (byte)'e' << 16 | (byte)'r' << 8 | (byte)'o',
 
 	/// <summary>Malayalam</summary>
-	Malayalam = 347,
+	Malayalam = (byte)'M' << 24 | (byte)'l' << 16 | (byte)'y' << 8 | (byte)'m',
 
 	/// <summary>Modi, Moḍī</summary>
-	Modi = 324,
+	Modi = (byte)'M' << 24 | (byte)'o' << 16 | (byte)'d' << 8 | (byte)'i',
 
 	/// <summary>Mongolian</summary>
-	Mongolian = 145,
+	Mongolian = (byte)'M' << 24 | (byte)'o' << 16 | (byte)'n' << 8 | (byte)'g',
 
 	/// <summary>Moon (Moon code, Moon script, Moon type)</summary>
-	Moon = 218,
+	Moon = (byte)'M' << 24 | (byte)'o' << 16 | (byte)'o' << 8 | (byte)'n',
 
 	/// <summary>Mro, Mru</summary>
-	Mro = 264,
+	Mro = (byte)'M' << 24 | (byte)'r' << 16 | (byte)'o' << 8 | (byte)'o',
 
 	/// <summary>Meitei Mayek (Meithei, Meetei)</summary>
-	MeeteiMayek = 337,
+	MeeteiMayek = (byte)'M' << 24 | (byte)'t' << 16 | (byte)'e' << 8 | (byte)'i',
 
 	/// <summary>Multani</summary>
-	Multani = 323,
+	Multani = (byte)'M' << 24 | (byte)'u' << 16 | (byte)'l' << 8 | (byte)'t',
 
 	/// <summary>Myanmar (Burmese)</summary>
-	Myanmar = 350,
+	Myanmar = (byte)'M' << 24 | (byte)'y' << 16 | (byte)'m' << 8 | (byte)'r',
 
 	/// <summary>Nag Mundari</summary>
-	NagMundari = 295,
+	NagMundari = (byte)'N' << 24 | (byte)'a' << 16 | (byte)'g' << 8 | (byte)'m',
 
 	/// <summary>Nandinagari</summary>
-	Nandinagari = 311,
+	Nandinagari = (byte)'N' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'d',
 
 	/// <summary>Old North Arabian (Ancient North Arabian)</summary>
-	OldNorthArabian = 106,
+	OldNorthArabian = (byte)'N' << 24 | (byte)'a' << 16 | (byte)'r' << 8 | (byte)'b',
 
 	/// <summary>Nabataean</summary>
-	Nabataean = 159,
+	Nabataean = (byte)'N' << 24 | (byte)'b' << 16 | (byte)'a' << 8 | (byte)'t',
 
 	/// <summary>Newa, Newar, Newari, Nepāla lipi</summary>
-	Newa = 333,
+	Newa = (byte)'N' << 24 | (byte)'e' << 16 | (byte)'w' << 8 | (byte)'a',
 
 	/// <summary>Naxi Dongba (na²¹ɕi³³ to³³ba²¹, Nakhi Tomba)</summary>
-	NaxiDongba = 85,
+	NaxiDongba = (byte)'N' << 24 | (byte)'k' << 16 | (byte)'d' << 8 | (byte)'b',
 
 	/// <summary>Naxi Geba (na²¹ɕi³³ gʌ²¹ba²¹, 'Na-'Khi ²Ggŏ-¹baw, Nakhi Geba)</summary>
-	NaxiGeba = 420,
+	NaxiGeba = (byte)'N' << 24 | (byte)'k' << 16 | (byte)'g' << 8 | (byte)'b',
 
 	/// <summary>N’Ko</summary>
-	Nko = 165,
+	Nko = (byte)'N' << 24 | (byte)'k' << 16 | (byte)'o' << 8 | (byte)'o',
 
 	/// <summary>Nüshu</summary>
-	Nushu = 499,
+	Nushu = (byte)'N' << 24 | (byte)'s' << 16 | (byte)'h' << 8 | (byte)'u',
 
 	/// <summary>Ogham</summary>
-	Ogham = 212,
+	Ogham = (byte)'O' << 24 | (byte)'g' << 16 | (byte)'a' << 8 | (byte)'m',
 
 	/// <summary>Ol Chiki (Ol Cemet’, Ol, Santali)</summary>
-	OlChiki = 261,
+	OlChiki = (byte)'O' << 24 | (byte)'l' << 16 | (byte)'c' << 8 | (byte)'k',
 
 	/// <summary>Ol Onal</summary>
-	OlOnal = 296,
+	OlOnal = (byte)'O' << 24 | (byte)'n' << 16 | (byte)'a' << 8 | (byte)'o',
 
 	/// <summary>Old Turkic, Orkhon Runic</summary>
-	OldTurkic = 175,
+	OldTurkic = (byte)'O' << 24 | (byte)'r' << 16 | (byte)'k' << 8 | (byte)'h',
 
 	/// <summary>Oriya (Odia)</summary>
-	Oriya = 327,
+	Oriya = (byte)'O' << 24 | (byte)'r' << 16 | (byte)'y' << 8 | (byte)'a',
 
 	/// <summary>Osage</summary>
-	Osage = 219,
+	Osage = (byte)'O' << 24 | (byte)'s' << 16 | (byte)'g' << 8 | (byte)'e',
 
 	/// <summary>Osmanya</summary>
-	Osmanya = 260,
+	Osmanya = (byte)'O' << 24 | (byte)'s' << 16 | (byte)'m' << 8 | (byte)'a',
 
 	/// <summary>Old Uyghur</summary>
-	OldUyghur = 143,
+	OldUyghur = (byte)'O' << 24 | (byte)'u' << 16 | (byte)'g' << 8 | (byte)'r',
 
 	/// <summary>Palmyrene</summary>
-	Palmyrene = 126,
+	Palmyrene = (byte)'P' << 24 | (byte)'a' << 16 | (byte)'l' << 8 | (byte)'m',
 
 	/// <summary>Pau Cin Hau</summary>
-	PauCinHau = 263,
+	PauCinHau = (byte)'P' << 24 | (byte)'a' << 16 | (byte)'u' << 8 | (byte)'c',
 
 	/// <summary>Proto-Cuneiform</summary>
-	ProtoCuneiform = 15,
+	ProtoCuneiform = (byte)'P' << 24 | (byte)'c' << 16 | (byte)'u' << 8 | (byte)'n',
 
 	/// <summary>Proto-Elamite</summary>
-	ProtoElamite = 16,
+	ProtoElamite = (byte)'P' << 24 | (byte)'e' << 16 | (byte)'l' << 8 | (byte)'m',
 
 	/// <summary>Old Permic</summary>
-	OldPermic = 227,
+	OldPermic = (byte)'P' << 24 | (byte)'e' << 16 | (byte)'r' << 8 | (byte)'m',
 
 	/// <summary>Phags-pa</summary>
-	PhagsPa = 331,
+	PhagsPa = (byte)'P' << 24 | (byte)'h' << 16 | (byte)'a' << 8 | (byte)'g',
 
 	/// <summary>Inscriptional Pahlavi</summary>
-	InscriptionalPahlavi = 131,
+	InscriptionalPahlavi = (byte)'P' << 24 | (byte)'h' << 16 | (byte)'l' << 8 | (byte)'i',
 
 	/// <summary>Psalter Pahlavi</summary>
-	PsalterPahlavi = 132,
+	PsalterPahlavi = (byte)'P' << 24 | (byte)'h' << 16 | (byte)'l' << 8 | (byte)'p',
 
 	/// <summary>Book Pahlavi</summary>
-	BookPahlavi = 133,
+	BookPahlavi = (byte)'P' << 24 | (byte)'h' << 16 | (byte)'l' << 8 | (byte)'v',
 
 	/// <summary>Phoenician</summary>
-	Phoenician = 115,
+	Phoenician = (byte)'P' << 24 | (byte)'h' << 16 | (byte)'n' << 8 | (byte)'x',
 
 	/// <summary>Klingon (KLI pIqaD)</summary>
-	Klingon = 293,
+	Klingon = (byte)'P' << 24 | (byte)'i' << 16 | (byte)'q' << 8 | (byte)'d',
 
 	/// <summary>Miao (Pollard)</summary>
-	Miao = 282,
+	Miao = (byte)'P' << 24 | (byte)'l' << 16 | (byte)'r' << 8 | (byte)'d',
 
 	/// <summary>Inscriptional Parthian</summary>
-	InscriptionalParthian = 130,
+	InscriptionalParthian = (byte)'P' << 24 | (byte)'r' << 16 | (byte)'t' << 8 | (byte)'i',
 
 	/// <summary>Proto-Sinaitic</summary>
-	ProtoSinaitic = 103,
+	ProtoSinaitic = (byte)'P' << 24 | (byte)'s' << 16 | (byte)'i' << 8 | (byte)'n',
 
     /// <summary>Ranjana</summary>
-    Ranjana = 303,
+    Ranjana = (byte)'R' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'j',
 
     /// <summary>Rejang (Redjang, Kaganga)</summary>
-    Rejang = 363,
+    Rejang = (byte)'R' << 24 | (byte)'j' << 16 | (byte)'n' << 8 | (byte)'g',
 
     /// <summary>Hanifi Rohingya</summary>
-    HanifiRohingya = 167,
+    HanifiRohingya = (byte)'R' << 24 | (byte)'o' << 16 | (byte)'h' << 8 | (byte)'g',
 
     /// <summary>Rongorongo</summary>
-    Rongorongo = 620,
+    Rongorongo = (byte)'R' << 24 | (byte)'o' << 16 | (byte)'r' << 8 | (byte)'o',
 
     /// <summary>Runic</summary>
-    Runic = 211,
+    Runic = (byte)'R' << 24 | (byte)'u' << 16 | (byte)'n' << 8 | (byte)'r',
 
     /// <summary>Samaritan</summary>
-    Samaritan = 123,
+    Samaritan = (byte)'S' << 24 | (byte)'a' << 16 | (byte)'m' << 8 | (byte)'r',
 
     /// <summary>Sarati</summary>
-    Sarati = 292,
+    Sarati = (byte)'S' << 24 | (byte)'a' << 16 | (byte)'r' << 8 | (byte)'a',
 
     /// <summary>Old South Arabian</summary>
-    OldSouthArabian = 105,
+    OldSouthArabian = (byte)'S' << 24 | (byte)'a' << 16 | (byte)'r' << 8 | (byte)'b',
 
     /// <summary>Saurashtra</summary>
-    Saurashtra = 344,
+    Saurashtra = (byte)'S' << 24 | (byte)'a' << 16 | (byte)'u' << 8 | (byte)'r',
 
     /// <summary>(Small) Seal</summary>
-    Seal = 590,
+    Seal = (byte)'S' << 24 | (byte)'e' << 16 | (byte)'a' << 8 | (byte)'l',
 
 	/// <summary>SignWriting</summary>
-	SignWriting = 95,
+	SignWriting = (byte)'S' << 24 | (byte)'g' << 16 | (byte)'n' << 8 | (byte)'w',
 
 	/// <summary>Shavian (Shaw)</summary>
-	Shavian = 281,
+	Shavian = (byte)'S' << 24 | (byte)'h' << 16 | (byte)'a' << 8 | (byte)'w',
 
 	/// <summary>Sharada, Śāradā</summary>
-	Sharada = 319,
+	Sharada = (byte)'S' << 24 | (byte)'h' << 16 | (byte)'r' << 8 | (byte)'d',
 
 	/// <summary>Shuishu</summary>
-	Shuishu = 530,
+	Shuishu = (byte)'S' << 24 | (byte)'h' << 16 | (byte)'u' << 8 | (byte)'i',
 
 	/// <summary>Siddham, Siddhaṃ, Siddhamātṛkā</summary>
-	Siddham = 302,
+	Siddham = (byte)'S' << 24 | (byte)'i' << 16 | (byte)'d' << 8 | (byte)'d',
 
 	/// <summary>Sidetic</summary>
-	Sidetic = 180,
+	Sidetic = (byte)'S' << 24 | (byte)'i' << 16 | (byte)'d' << 8 | (byte)'t',
 
 	/// <summary>Khudawadi, Sindhi</summary>
-	Khudawadi = 318,
+	Khudawadi = (byte)'S' << 24 | (byte)'i' << 16 | (byte)'n' << 8 | (byte)'d',
 
 	/// <summary>Sinhala</summary>
-	Sinhala = 348,
+	Sinhala = (byte)'S' << 24 | (byte)'i' << 16 | (byte)'n' << 8 | (byte)'h',
 
 	/// <summary>Sogdian</summary>
-	Sogdian = 141,
+	Sogdian = (byte)'S' << 24 | (byte)'o' << 16 | (byte)'g' << 8 | (byte)'d',
 
 	/// <summary>Old Sogdian</summary>
-	OldSogdian = 142,
+	OldSogdian = (byte)'S' << 24 | (byte)'o' << 16 | (byte)'g' << 8 | (byte)'o',
 
 	/// <summary>Sora Sompeng</summary>
-	SoraSompeng = 398,
+	SoraSompeng = (byte)'S' << 24 | (byte)'o' << 16 | (byte)'r' << 8 | (byte)'a',
 
 	/// <summary>Soyombo</summary>
-	Soyombo = 329,
+	Soyombo = (byte)'S' << 24 | (byte)'o' << 16 | (byte)'y' << 8 | (byte)'o',
 
 	/// <summary>Sundanese</summary>
-	Sundanese = 362,
+	Sundanese = (byte)'S' << 24 | (byte)'u' << 16 | (byte)'n' << 8 | (byte)'d',
 
 	/// <summary>Sunuwar</summary>
-	Sunuwar = 274,
+	Sunuwar = (byte)'S' << 24 | (byte)'u' << 16 | (byte)'n' << 8 | (byte)'u',
 
 	/// <summary>Syloti Nagri</summary>
-	SylotiNagri = 316,
+	SylotiNagri = (byte)'S' << 24 | (byte)'y' << 16 | (byte)'l' << 8 | (byte)'o',
 
 	/// <summary>Syriac</summary>
-	Syriac = 135,
+	Syriac = (byte)'S' << 24 | (byte)'y' << 16 | (byte)'r' << 8 | (byte)'c',
 
 	/// <summary>Syriac (Estrangelo variant)</summary>
-	SyriacEstrangelo = 138,
+	SyriacEstrangelo = (byte)'S' << 24 | (byte)'y' << 16 | (byte)'r' << 8 | (byte)'e',
 
     /// <summary>Syriac (Western variant)</summary>
-    SyriacWestern = 137,
+    SyriacWestern = (byte)'S' << 24 | (byte)'y' << 16 | (byte)'r' << 8 | (byte)'j',
 
     /// <summary>Syriac (Eastern variant)</summary>
-    SyriacEastern = 136,
+    SyriacEastern = (byte)'S' << 24 | (byte)'y' << 16 | (byte)'r' << 8 | (byte)'n',
 
     /// <summary>Tagbanwa</summary>
-    Tagbanwa = 373,
+    Tagbanwa = (byte)'T' << 24 | (byte)'a' << 16 | (byte)'g' << 8 | (byte)'b',
 
     /// <summary>Takri, Ṭākrī, Ṭāṅkrī</summary>
-    Takri = 321,
+    Takri = (byte)'T' << 24 | (byte)'a' << 16 | (byte)'k' << 8 | (byte)'r',
 
     /// <summary>Tai Le</summary>
-    TaiLe = 353,
+    TaiLe = (byte)'T' << 24 | (byte)'a' << 16 | (byte)'l' << 8 | (byte)'e',
 
     /// <summary>New Tai Lue</summary>
-    NewTaiLue = 354,
+    NewTaiLue = (byte)'T' << 24 | (byte)'a' << 16 | (byte)'l' << 8 | (byte)'u',
 
     /// <summary>Tamil</summary>
-    Tamil = 346,
+    Tamil = (byte)'T' << 24 | (byte)'a' << 16 | (byte)'m' << 8 | (byte)'l',
 
     /// <summary>Tangut</summary>
-    Tangut = 520,
+    Tangut = (byte)'T' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'g',
 
     /// <summary>Tai Viet</summary>
-    TaiViet = 359,
+    TaiViet = (byte)'T' << 24 | (byte)'a' << 16 | (byte)'v' << 8 | (byte)'t',
 
     /// <summary>Tai Yo</summary>
-    TaiYo = 380,
+    TaiYo = (byte)'T' << 24 | (byte)'a' << 16 | (byte)'y' << 8 | (byte)'o',
 
 	/// <summary>Telugu</summary>
-	Telugu = 340,
+	Telugu = (byte)'T' << 24 | (byte)'e' << 16 | (byte)'l' << 8 | (byte)'u',
 
 	/// <summary>Tengwar</summary>
-	Tengwar = 290,
+	Tengwar = (byte)'T' << 24 | (byte)'e' << 16 | (byte)'n' << 8 | (byte)'g',
 
 	/// <summary>Tifinagh (Berber)</summary>
-	Tifinagh = 120,
+	Tifinagh = (byte)'T' << 24 | (byte)'f' << 16 | (byte)'n' << 8 | (byte)'g',
 
 	/// <summary>Tagalog (Baybayin, Alibata)</summary>
-	Tagalog = 370,
+	Tagalog = (byte)'T' << 24 | (byte)'g' << 16 | (byte)'l' << 8 | (byte)'g',
 
 	/// <summary>Thaana</summary>
-	Thaana = 170,
+	Thaana = (byte)'T' << 24 | (byte)'h' << 16 | (byte)'a' << 8 | (byte)'a',
 
 	/// <summary>Thai</summary>
-	Thai = 352,
+	Thai = (byte)'T' << 24 | (byte)'h' << 16 | (byte)'a' << 8 | (byte)'i',
 
 	/// <summary>Tibetan</summary>
-	Tibetan = 330,
+	Tibetan = (byte)'T' << 24 | (byte)'i' << 16 | (byte)'b' << 8 | (byte)'t',
 
 	/// <summary>Tirhuta</summary>
-	Tirhuta = 326,
+	Tirhuta = (byte)'T' << 24 | (byte)'i' << 16 | (byte)'r' << 8 | (byte)'h',
 
 	/// <summary>Tangsa</summary>
-	Tangsa = 275,
+	Tangsa = (byte)'T' << 24 | (byte)'n' << 16 | (byte)'s' << 8 | (byte)'a',
 
 	/// <summary>Todhri</summary>
-	Todhri = 229,
+	Todhri = (byte)'T' << 24 | (byte)'o' << 16 | (byte)'d' << 8 | (byte)'r',
 
 	/// <summary>Tolong Siki</summary>
-	TolongSiki = 299,
+	TolongSiki = (byte)'T' << 24 | (byte)'o' << 16 | (byte)'l' << 8 | (byte)'s',
 
     /// <summary>Toto</summary>
-    Toto = 294,
+    Toto = (byte)'T' << 24 | (byte)'o' << 16 | (byte)'t' << 8 | (byte)'o',
 
     /// <summary>Tulu-Tigalari</summary>
-    TuluTigalari = 341,
+    TuluTigalari = (byte)'T' << 24 | (byte)'u' << 16 | (byte)'t' << 8 | (byte)'g',
 
     /// <summary>Ugaritic</summary>
-    Ugaritic = 40,
+    Ugaritic = (byte)'U' << 24 | (byte)'g' << 16 | (byte)'a' << 8 | (byte)'r',
 
     /// <summary>Vai</summary>
-    Vai = 470,
+    Vai = (byte)'V' << 24 | (byte)'a' << 16 | (byte)'i' << 8 | (byte)'i',
 
     /// <summary>Visible Speech</summary>
-    VisibleSpeech = 280,
+    VisibleSpeech = (byte)'V' << 24 | (byte)'i' << 16 | (byte)'s' << 8 | (byte)'p',
 
 	/// <summary>Vithkuqi</summary>
-	Vithkuqi = 228,
+	Vithkuqi = (byte)'V' << 24 | (byte)'i' << 16 | (byte)'t' << 8 | (byte)'h',
 
 	/// <summary>Warang Citi (Varang Kshiti)</summary>
-	WarangCiti = 262,
+	WarangCiti = (byte)'W' << 24 | (byte)'a' << 16 | (byte)'r' << 8 | (byte)'a',
 
 	/// <summary>Wancho</summary>
-	Wancho = 283,
+	Wancho = (byte)'W' << 24 | (byte)'c' << 16 | (byte)'h' << 8 | (byte)'o',
 
 	/// <summary>Woleai</summary>
-	Woleai = 480,
+	Woleai = (byte)'W' << 24 | (byte)'o' << 16 | (byte)'l' << 8 | (byte)'e',
 
 	/// <summary>Old Persian</summary>
-	OldPersian = 30,
+	OldPersian = (byte)'X' << 24 | (byte)'p' << 16 | (byte)'e' << 8 | (byte)'o',
 
 	/// <summary>Cuneiform, Sumero-Akkadian</summary>
-	Cuneiform = 20,
+	Cuneiform = (byte)'X' << 24 | (byte)'s' << 16 | (byte)'u' << 8 | (byte)'x',
 
 	/// <summary>Yezidi</summary>
-	Yezidi = 192,
+	Yezidi = (byte)'Y' << 24 | (byte)'e' << 16 | (byte)'z' << 8 | (byte)'i',
 
 	/// <summary>Yi</summary>
-	Yi = 460,
+	Yi = (byte)'Y' << 24 | (byte)'i' << 16 | (byte)'i' << 8 | (byte)'i',
 
 	/// <summary>Zanabazar Square (Zanabazarin Dörböljin Useg, Xewtee Dörböljin Bicig, Horizontal Square Script)</summary>
-	ZanabazarSquare = 339,
+	ZanabazarSquare = (byte)'Z' << 24 | (byte)'a' << 16 | (byte)'n' << 8 | (byte)'b',
 
 	/// <summary>Code for inherited script</summary>
-	Inherited = 994,
+	Inherited = (byte)'Z' << 24 | (byte)'i' << 16 | (byte)'n' << 8 | (byte)'h',
 
 	/// <summary>Mathematical notation</summary>
-	MathematicalNotation = 995,
+	MathematicalNotation = (byte)'Z' << 24 | (byte)'m' << 16 | (byte)'t' << 8 | (byte)'h',
 
     /// <summary>Symbols (Emoji variant)</summary>
-    SymbolsEmoji = 993,
+    SymbolsEmoji = (byte)'Z' << 24 | (byte)'s' << 16 | (byte)'y' << 8 | (byte)'e',
 
     /// <summary>Symbols</summary>
-    Symbols = 996,
+    Symbols = (byte)'Z' << 24 | (byte)'s' << 16 | (byte)'y' << 8 | (byte)'m',
 
     /// <summary>Code for unwritten documents</summary>
-    UnwrittenDocuments = 997,
+    UnwrittenDocuments = (byte)'Z' << 24 | (byte)'x' << 16 | (byte)'x' << 8 | (byte)'x',
 
 	/// <summary>Code for undetermined script</summary>
-	Common = 998,
+	Common = (byte)'Z' << 24 | (byte)'y' << 16 | (byte)'y' << 8 | (byte)'y',
 
 	/// <summary>Code for uncoded script</summary>
-	Unknown = 999,
+	Unknown = (byte)'Z' << 24 | (byte)'z' << 16 | (byte)'z' << 8 | (byte)'z',
 }
