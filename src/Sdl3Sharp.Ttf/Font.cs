@@ -1188,6 +1188,8 @@ public sealed partial class Font : IDisposable
 		set => Properties?.TrySetNumberValue(PropertyNames.OutlineMiterLimitNumber, FixedPoint.ToSigned16Dot16(value));
 	}
 
+	internal unsafe TTF_Font* Pointer { [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)] get => mFont; }
+
 	/// <summary>
 	/// Gets the properties associated with this font
 	/// </summary>
