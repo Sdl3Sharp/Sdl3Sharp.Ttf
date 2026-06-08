@@ -5,6 +5,7 @@ using Sdl3Sharp.Video;
 using Sdl3Sharp.Video.Coloring;
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -14,11 +15,15 @@ namespace Sdl3Sharp.Ttf;
 /// <summary>
 /// Represents a font that can be used to render <see cref="Text"/>s, strings, and individual glyphs with various styles
 /// </summary>
+[DebuggerDisplay($"{{{nameof(DebuggerDisplay)},nq}}")]
 public sealed partial class Font : IDisposable
 {
 	private interface IUnsafeConstructorDispatch;
 
 	private static readonly ConcurrentDictionary<IntPtr, WeakReference<Font>> mKnownInstances = [];
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	private string DebuggerDisplay => ToString();
 
 	private unsafe TTF_Font* mFont;
 	private readonly FallbackCollection mFallbacks;
@@ -1476,6 +1481,17 @@ public sealed partial class Font : IDisposable
 	/// <paramref name="glyphLowSurrogate"/> does not represent a UTF-16 low surrogate code point
 	/// </exception>
 	public bool HasGlyph(char glyphHighSurrogate, char glyphLowSurrogate) => HasGlyph(new Rune(glyphHighSurrogate, glyphLowSurrogate));
+
+	public override string ToString()
+		=> FamilyName switch
+		{
+			null => nameof(Font),
+			var familyName => $"{familyName}{StyleName switch
+			{
+				null => string.Empty,
+				var styleName => $" - {styleName}"
+			}}"
+		};
 
 	// This could also be "TryCopy" to be more faithful to the underlying SDL API,
 	// but I believe "TryDuplicate" is more intuitive for C# devs,
