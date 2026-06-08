@@ -1603,31 +1603,6 @@ public sealed partial class Font : IDisposable
 	public bool TryGetGlyphImage(char glyphHighSurrogate, char glyphLowSurrogate, out Surface? image, out ImageType imageType)
 		=> TryGetGlyphImage(new Rune(glyphHighSurrogate, glyphLowSurrogate), out image, out imageType);
 
-	/* TODO: should this be made public/uncommented? I can't really think of a use case, and even in SDL terms, it seems to be kinda exotic.
-	 * 
-	public bool TryGetGlyphImageForIndex(int glyphIndex, out Surface? image, out ImageType imageType)
-	{
-		unsafe
-		{
-			Unsafe.SkipInit(out ImageType imageTypeTmp);
-
-			var imagePtr = TTF_GetGlyphImageForIndex(mFont, unchecked((uint)glyphIndex), &imageTypeTmp);
-
-			if (imagePtr is null)
-			{
-				image = null;
-				imageType = ImageType.Invalid;
-				return false;
-			}
-
-			image = new(imagePtr, register: true);
-			imageType = imageTypeTmp;
-
-			return true;
-		}
-	}
-	*/
-
 	/// <summary>
 	/// Tries to get the kerning distance between two Unicode code points for this font
 	/// </summary>
@@ -1891,6 +1866,28 @@ public sealed partial class Font : IDisposable
 	/// </exception>
 	public static bool TryGetGlyphScript(char glyphHighSurrogate, char glyphLowSurrogate, out Script script)
 		=> TryGetGlyphScript(new Rune(glyphHighSurrogate, glyphLowSurrogate), out script);
+
+	internal unsafe static bool TryGetOrCreate(TTF_Font* font, [NotNullWhen(true)] out Font? result)
+	{
+		if (font is null)
+		{
+			result = null;
+			return false;
+		}
+
+		var fontRef = mKnownInstances.GetOrAdd(unchecked((IntPtr)font), createRef);
+
+		if (!fontRef.TryGetTarget(out result))
+		{
+			fontRef.SetTarget(result = create(font));
+		}
+
+		return true;
+
+		static WeakReference<Font> createRef(IntPtr font) => new(create(unchecked((TTF_Font*)font)));
+
+		static Font create(TTF_Font* font) => new(font, register: false);
+	}
 
 	/// <summary>
 	/// Tries to calculate the dimensions of a rendered text with this font
