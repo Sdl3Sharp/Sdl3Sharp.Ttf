@@ -1482,6 +1482,7 @@ public sealed partial class Font : IDisposable
 	/// </exception>
 	public bool HasGlyph(char glyphHighSurrogate, char glyphLowSurrogate) => HasGlyph(new Rune(glyphHighSurrogate, glyphLowSurrogate));
 
+	/// <inheritdoc/>
 	public override string ToString()
 		=> FamilyName switch
 		{
@@ -1547,7 +1548,7 @@ public sealed partial class Font : IDisposable
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryGetGlyphImage(Rune glyph, out Surface? image, out ImageType imageType)
+	public bool TryGetGlyphImage(Rune glyph, [NotNullWhen(true)] out Surface? image, out ImageType imageType)
 	{
 		unsafe
 		{
@@ -1589,7 +1590,7 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="glyph"/> represents a UTF-16 surrogate code point (U+D800..U+DFFF, inclusive)</exception>
-	public bool TryGetGlyphImage(char glyph, out Surface? image, out ImageType imageType)
+	public bool TryGetGlyphImage(char glyph, [NotNullWhen(true)] out Surface? image, out ImageType imageType)
 		=> TryGetGlyphImage(new Rune(glyph), out image, out imageType);
 
 	/// <summary>
@@ -1616,7 +1617,7 @@ public sealed partial class Font : IDisposable
 	/// - OR -
 	/// <paramref name="glyphLowSurrogate"/> does not represent a UTF-16 low surrogate code point
 	/// </exception>
-	public bool TryGetGlyphImage(char glyphHighSurrogate, char glyphLowSurrogate, out Surface? image, out ImageType imageType)
+	public bool TryGetGlyphImage(char glyphHighSurrogate, char glyphLowSurrogate, [NotNullWhen(true)] out Surface? image, out ImageType imageType)
 		=> TryGetGlyphImage(new Rune(glyphHighSurrogate, glyphLowSurrogate), out image, out imageType);
 
 	/// <summary>
