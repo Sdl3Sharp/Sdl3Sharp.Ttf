@@ -1558,15 +1558,16 @@ public sealed partial class Font : IDisposable
 
 			var imagePtr = TTF_GetGlyphImage(mFont, Unsafe.BitCast<Rune, uint>(glyph), &imageTypeTmp);
 
-			if (imagePtr is null)
+			if (!Surface.TryGetOrCreate(imagePtr, out image))
 			{
+				// Surface.TryGetOrCreate only fails if the pointer is null
+
 				image = null;
 				imageType = ImageType.Invalid;
 
 				return false;
 			}
 
-			image = new(imagePtr, register: true);
 			imageType = imageTypeTmp;
 
 			return true;
