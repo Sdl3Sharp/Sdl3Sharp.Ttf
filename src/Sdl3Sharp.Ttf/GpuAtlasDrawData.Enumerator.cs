@@ -30,7 +30,7 @@ partial struct GpuAtlasDrawData
 		/// <inheritdoc/>
 		readonly GpuAtlasDrawSequence IEnumerator<GpuAtlasDrawSequence>.Current
 		{
-			[method: MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+			[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
 			get => Current;
 		}
 

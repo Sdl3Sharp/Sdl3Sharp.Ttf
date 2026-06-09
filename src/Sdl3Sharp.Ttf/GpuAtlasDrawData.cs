@@ -74,7 +74,7 @@ public readonly ref partial struct GpuAtlasDrawData
 	/// <summary>
 	/// Enumerates the <see cref="GpuAtlasDrawSequence"/>s in this <see cref="GpuAtlasDrawData"/>
 	/// </summary>
-	/// <returns>A <see cref="Enumerator"/> that can be used to enumerate the <see cref="GpuAtlasDrawSequence"/>s in this <see cref="GpuAtlasDrawData"/></returns>
+	/// <returns>An <see cref="Enumerator"/> that can be used to enumerate the <see cref="GpuAtlasDrawSequence"/>s in this <see cref="GpuAtlasDrawData"/></returns>
 	public readonly Enumerator GetEnumerator() => new(this);
 
 	/// <summary>

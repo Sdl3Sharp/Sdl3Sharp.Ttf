@@ -1022,7 +1022,7 @@ public sealed partial class Font : IDisposable
 	/// Signed distance field (SDF) is a technique that helps fonts look sharp even when scaling and rotating, and requires special shader support for display.
 	/// </para>
 	/// <para>
-	/// This works well with <see cref="TryRenderBlendedGlyph(Rune, Color{byte}, out Surface?)"/>, <see cref="TryRenderBlendedText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>, <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/>, etc.,
+	/// This works well with <see cref="TryRenderBlendedGlyph(Rune, Color{byte}, out Surface?)"/>, <see cref="TryRenderBlendedString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>, <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/>, etc.,
 	/// and generates the raw signed distance values in the alpha channel of the resulting texture.
 	/// </para>
 	/// <para>
@@ -1925,13 +1925,13 @@ public sealed partial class Font : IDisposable
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryGetTextSize(ReadOnlySpan<char> text, out int width, out int height)
+	public bool TryGetStringSize(ReadOnlySpan<char> text, out int width, out int height)
 	{
 		unsafe
 		{
 			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
 
-			return TryGetTextSize(textUtf8.Buffer, length, out width, out height);
+			return TryGetStringSize(textUtf8.Buffer, length, out width, out height);
 		}
 	}
 
@@ -1951,13 +1951,13 @@ public sealed partial class Font : IDisposable
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryGetTextSize(ReadOnlySpan<byte> text, out int width, out int height)
+	public bool TryGetStringSize(ReadOnlySpan<byte> text, out int width, out int height)
 	{
 		unsafe
 		{
 			fixed (byte* textPtr = text)
 			{
-				return TryGetTextSize(textPtr, unchecked((nuint)text.Length), out width, out height);
+				return TryGetStringSize(textPtr, unchecked((nuint)text.Length), out width, out height);
 			}
 		}
 	}
@@ -1979,7 +1979,7 @@ public sealed partial class Font : IDisposable
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryGetTextSize(byte* text, nuint textLength, out int width, out int height)
+	public unsafe bool TryGetStringSize(byte* text, nuint textLength, out int width, out int height)
 	{
 		Unsafe.SkipInit(out int widthTmp);
 		Unsafe.SkipInit(out int heightTmp);
@@ -2011,19 +2011,19 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryGetWrappedTextSize(ReadOnlySpan{char}, out int, out int)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryGetWrappedStringSize(ReadOnlySpan{char}, out int, out int)"/> overload instead.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryGetWrappedTextSize(ReadOnlySpan<char> text, int wrapWidth, out int width, out int height)
+	public bool TryGetWrappedStringSize(ReadOnlySpan<char> text, int wrapWidth, out int width, out int height)
 	{
 		unsafe
 		{
 			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
 
-			return TryGetWrappedTextSize(textUtf8.Buffer, length, wrapWidth, out width, out height);
+			return TryGetWrappedStringSize(textUtf8.Buffer, length, wrapWidth, out width, out height);
 		}
 	}
 
@@ -2043,14 +2043,14 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryGetWrappedTextSize(ReadOnlySpan{char}, int, out int, out int)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryGetWrappedStringSize(ReadOnlySpan{char}, int, out int, out int)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryGetWrappedTextSize(ReadOnlySpan<char> text, out int width, out int height)
-		=> TryGetWrappedTextSize(text, wrapWidth: 0, out width, out height);
+	public bool TryGetWrappedStringSize(ReadOnlySpan<char> text, out int width, out int height)
+		=> TryGetWrappedStringSize(text, wrapWidth: 0, out width, out height);
 
 	/// <summary>
 	/// Tries to calculate the dimensions of a rendered text with this font, with wrapping enabled
@@ -2070,19 +2070,19 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryGetWrappedTextSize(ReadOnlySpan{byte}, out int, out int)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryGetWrappedStringSize(ReadOnlySpan{byte}, out int, out int)"/> overload instead.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryGetWrappedTextSize(ReadOnlySpan<byte> text, int wrapWidth, out int width, out int height)
+	public bool TryGetWrappedStringSize(ReadOnlySpan<byte> text, int wrapWidth, out int width, out int height)
 	{
 		unsafe
 		{
 			fixed (byte* textPtr = text)
 			{
-				return TryGetWrappedTextSize(textPtr, unchecked((nuint)text.Length), wrapWidth, out width, out height);
+				return TryGetWrappedStringSize(textPtr, unchecked((nuint)text.Length), wrapWidth, out width, out height);
 			}
 		}
 	}
@@ -2103,14 +2103,14 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryGetWrappedTextSize(ReadOnlySpan{byte}, int, out int, out int)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryGetWrappedStringSize(ReadOnlySpan{byte}, int, out int, out int)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryGetWrappedTextSize(ReadOnlySpan<byte> text, out int width, out int height)
-		=> TryGetWrappedTextSize(text, wrapWidth: 0, out width, out height);
+	public bool TryGetWrappedStringSize(ReadOnlySpan<byte> text, out int width, out int height)
+		=> TryGetWrappedStringSize(text, wrapWidth: 0, out width, out height);
 
 	/// <summary>
 	/// Tries to calculate the dimensions of a rendered text with this font, with wrapping enabled
@@ -2131,13 +2131,13 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryGetWrappedTextSize(byte*, nuint, out int, out int)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryGetWrappedStringSize(byte*, nuint, out int, out int)"/> overload instead.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryGetWrappedTextSize(byte* text, nuint textLength, int wrapWidth, out int width, out int height)
+	public unsafe bool TryGetWrappedStringSize(byte* text, nuint textLength, int wrapWidth, out int width, out int height)
 	{
 		unsafe
 		{
@@ -2171,14 +2171,14 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryGetWrappedTextSize(byte*, nuint, int, out int, out int)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryGetWrappedStringSize(byte*, nuint, int, out int, out int)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryGetWrappedTextSize(byte* text, nuint textLength, out int width, out int height)
-		=> TryGetWrappedTextSize(text, textLength, wrapWidth: 0, out width, out height);
+	public unsafe bool TryGetWrappedStringSize(byte* text, nuint textLength, out int width, out int height)
+		=> TryGetWrappedStringSize(text, textLength, wrapWidth: 0, out width, out height);
 
 	/// <summary>
 	/// Tries to measure how much of a given text can fit within a specified width when rendered with this font
@@ -2197,13 +2197,13 @@ public sealed partial class Font : IDisposable
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryMeasureText(ReadOnlySpan<char> text, int maxWidth, out int width, out int length)
+	public bool TryMeasureString(ReadOnlySpan<char> text, int maxWidth, out int width, out int length)
 	{
 		unsafe
 		{
 			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var textLength);
 
-			bool result = TryMeasureText(textUtf8.Buffer, textLength, maxWidth, out width, out var byteLength);
+			bool result = TryMeasureString(textUtf8.Buffer, textLength, maxWidth, out width, out var byteLength);
 
 			// TODO: is this good enough for now? 
 			// I mean the only real issues here are performance and that we potentially have to truncate the text if its byte length exceeds int.MaxValue.
@@ -2232,13 +2232,13 @@ public sealed partial class Font : IDisposable
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryMeasureText(ReadOnlySpan<byte> text, int maxWidth, out int width, out int length)
+	public bool TryMeasureString(ReadOnlySpan<byte> text, int maxWidth, out int width, out int length)
 	{
 		unsafe
 		{
 			fixed (byte* textPtr = text)
 			{
-				bool result = TryMeasureText(textPtr, unchecked((nuint)text.Length), maxWidth, out width, out var byteLength);
+				bool result = TryMeasureString(textPtr, unchecked((nuint)text.Length), maxWidth, out width, out var byteLength);
 
 				// Conversly to the UTF-16 overload, here we're going to just report the byte length.
 				// I believe this is more useful for a ReadOnlySpan<byte> UTF-8 sequence than actual character count.
@@ -2267,7 +2267,7 @@ public sealed partial class Font : IDisposable
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryMeasureText(byte* text, nuint textLength, int maxWidth, out int width, out nuint length)
+	public unsafe bool TryMeasureString(byte* text, nuint textLength, int maxWidth, out int width, out nuint length)
 	{
 		unsafe
 		{
@@ -2745,22 +2745,22 @@ public sealed partial class Font : IDisposable
 	/// <para>
 	/// The rendered text will not be wrapped, even when encountering new line characters.
 	/// The resulting surface will contain a single line of text and will be as wide as the rendered text requires.
-	/// You can use <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
+	/// You can use <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdText(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdString(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderBlendedText(ReadOnlySpan<char> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderBlendedString(ReadOnlySpan<char> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
 
-			return TryRenderBlendedText(textUtf8.Buffer, length, foregroundColor, out surface);
+			return TryRenderBlendedString(textUtf8.Buffer, length, foregroundColor, out surface);
 		}
 	}
 
@@ -2781,22 +2781,22 @@ public sealed partial class Font : IDisposable
 	/// <para>
 	/// The rendered text will not be wrapped, even when encountering new line characters.
 	/// The resulting surface will contain a single line of text and will be as wide as the rendered text requires.
-	/// You can use <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
+	/// You can use <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidText(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidString(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderBlendedText(ReadOnlySpan<byte> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderBlendedString(ReadOnlySpan<byte> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			fixed (byte* textPtr = text)
 			{
-				return TryRenderBlendedText(textPtr, unchecked((nuint)text.Length), foregroundColor, out surface);
+				return TryRenderBlendedString(textPtr, unchecked((nuint)text.Length), foregroundColor, out surface);
 			}
 		}
 	}
@@ -2819,16 +2819,16 @@ public sealed partial class Font : IDisposable
 	/// <para>
 	/// The rendered text will not be wrapped, even when encountering new line characters.
 	/// The resulting surface will contain a single line of text and will be as wide as the rendered text requires.
-	/// You can use <see cref="TryRenderBlendedWrappedText(byte*, nuint, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
+	/// You can use <see cref="TryRenderBlendedWrappedString(byte*, nuint, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdText(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedText(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidText(byte*, nuint, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdString(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedString(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidString(byte*, nuint, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryRenderBlendedText(byte* text, nuint textLength, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
+	public unsafe bool TryRenderBlendedString(byte* text, nuint textLength, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
@@ -2865,22 +2865,22 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/> overload instead.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderShadedWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderShadedWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderBlendedWrappedText(ReadOnlySpan<char> text, Color<byte> foregroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderBlendedWrappedString(ReadOnlySpan<char> text, Color<byte> foregroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
 
-			return TryRenderBlendedWrappedText(textUtf8.Buffer, length, foregroundColor, wrapWidth, out surface);
+			return TryRenderBlendedWrappedString(textUtf8.Buffer, length, foregroundColor, wrapWidth, out surface);
 		}
 	}
 
@@ -2902,17 +2902,17 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderBlendedWrappedText(ReadOnlySpan<char> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
-		=> TryRenderBlendedWrappedText(text, foregroundColor, wrapWidth: 0, out surface);
+	public bool TryRenderBlendedWrappedString(ReadOnlySpan<char> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
+		=> TryRenderBlendedWrappedString(text, foregroundColor, wrapWidth: 0, out surface);
 
 	/// <summary>
 	/// Tries to render a text with this font, with blended rendering and wrapping enabled
@@ -2934,22 +2934,22 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/> overload instead.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderShadedWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderShadedWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderBlendedWrappedText(ReadOnlySpan<byte> text, Color<byte> foregroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderBlendedWrappedString(ReadOnlySpan<byte> text, Color<byte> foregroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			fixed (byte* textPtr = text)
 			{
-				return TryRenderBlendedWrappedText(textPtr, unchecked((nuint)text.Length), foregroundColor, wrapWidth, out surface);
+				return TryRenderBlendedWrappedString(textPtr, unchecked((nuint)text.Length), foregroundColor, wrapWidth, out surface);
 			}
 		}
 	}
@@ -2972,17 +2972,17 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderBlendedWrappedText(ReadOnlySpan<byte> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
-		=> TryRenderBlendedWrappedText(text, foregroundColor, wrapWidth: 0, out surface);
+	public bool TryRenderBlendedWrappedString(ReadOnlySpan<byte> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
+		=> TryRenderBlendedWrappedString(text, foregroundColor, wrapWidth: 0, out surface);
 
 	/// <summary>
 	/// Tries to render a text with this font, with blended rendering and wrapping enabled
@@ -3005,16 +3005,16 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryRenderBlendedWrappedText(byte*, nuint, Color{byte}, out Surface?)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryRenderBlendedWrappedString(byte*, nuint, Color{byte}, out Surface?)"/> overload instead.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdWrappedText(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderShadedWrappedText(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(byte*, nuint, Color{byte}, int, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdWrappedString(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderShadedWrappedString(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(byte*, nuint, Color{byte}, int, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryRenderBlendedWrappedText(byte* text, nuint textLength, Color<byte> foregroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
+	public unsafe bool TryRenderBlendedWrappedString(byte* text, nuint textLength, Color<byte> foregroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
@@ -3050,17 +3050,17 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdWrappedText(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedWrappedText(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(byte*, nuint, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderLcdWrappedString(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedWrappedString(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(byte*, nuint, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryRenderBlendedWrappedText(byte*, nuint, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryRenderBlendedWrappedString(byte*, nuint, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryRenderBlendedWrappedText(byte* text, nuint textLength, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
-		=> TryRenderBlendedWrappedText(text, textLength, foregroundColor, wrapWidth: 0, out surface);
+	public unsafe bool TryRenderBlendedWrappedString(byte* text, nuint textLength, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
+		=> TryRenderBlendedWrappedString(text, textLength, foregroundColor, wrapWidth: 0, out surface);
 
 	/// <summary>
 	/// Tries to render a text with this font, with LCD subpixel rendering
@@ -3080,22 +3080,22 @@ public sealed partial class Font : IDisposable
 	/// <para>
 	/// The rendered text will not be wrapped, even when encountering new line characters.
 	/// The resulting surface will contain a single line of text and will be as wide as the rendered text requires.
-	/// You can use <see cref="TryRenderLcdWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
+	/// You can use <see cref="TryRenderLcdWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderLcdText(ReadOnlySpan<char> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderLcdString(ReadOnlySpan<char> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
 
-			return TryRenderLcdText(textUtf8.Buffer, length, foregroundColor, backgroundColor, out surface);
+			return TryRenderLcdString(textUtf8.Buffer, length, foregroundColor, backgroundColor, out surface);
 		}
 	}
 
@@ -3117,22 +3117,22 @@ public sealed partial class Font : IDisposable
 	/// <para>
 	/// The rendered text will not be wrapped, even when encountering new line characters.
 	/// The resulting surface will contain a single line of text and will be as wide as the rendered text requires.
-	/// You can use <see cref="TryRenderLcdWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
+	/// You can use <see cref="TryRenderLcdWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedText(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidText(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedString(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidString(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderLcdText(ReadOnlySpan<byte> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderLcdString(ReadOnlySpan<byte> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			fixed (byte* textPtr = text)
 			{
-				return TryRenderLcdText(textPtr, unchecked((nuint)text.Length), foregroundColor, backgroundColor, out surface);
+				return TryRenderLcdString(textPtr, unchecked((nuint)text.Length), foregroundColor, backgroundColor, out surface);
 			}
 		}
 	}
@@ -3156,16 +3156,16 @@ public sealed partial class Font : IDisposable
 	/// <para>
 	/// The rendered text will not be wrapped, even when encountering new line characters.
 	/// The resulting surface will contain a single line of text and will be as wide as the rendered text requires.
-	/// You can use <see cref="TryRenderLcdWrappedText(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
+	/// You can use <see cref="TryRenderLcdWrappedString(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedText(byte*, nuint, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedText(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidText(byte*, nuint, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedString(byte*, nuint, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedString(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidString(byte*, nuint, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryRenderLcdText(byte* text, nuint textLength, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
+	public unsafe bool TryRenderLcdString(byte* text, nuint textLength, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
 	{
 		var surfacePtr = TTF_RenderText_LCD(mFont, text, textLength, foregroundColor, backgroundColor);
 
@@ -3200,22 +3200,22 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryRenderLcdWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryRenderLcdWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/> overload instead.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderShadedWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderShadedWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderLcdWrappedText(ReadOnlySpan<char> text, Color<byte> foregroundColor, Color<byte> backgroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderLcdWrappedString(ReadOnlySpan<char> text, Color<byte> foregroundColor, Color<byte> backgroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
 
-			return TryRenderLcdWrappedText(textUtf8.Buffer, length, foregroundColor, backgroundColor, wrapWidth, out surface);
+			return TryRenderLcdWrappedString(textUtf8.Buffer, length, foregroundColor, backgroundColor, wrapWidth, out surface);
 		}
 	}
 
@@ -3238,17 +3238,17 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryRenderLcdWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryRenderLcdWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderLcdWrappedText(ReadOnlySpan<char> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
-		=> TryRenderLcdWrappedText(text, foregroundColor, backgroundColor, wrapWidth: 0, out surface);
+	public bool TryRenderLcdWrappedString(ReadOnlySpan<char> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
+		=> TryRenderLcdWrappedString(text, foregroundColor, backgroundColor, wrapWidth: 0, out surface);
 
 	/// <summary>
 	/// Tries to render a text with this font, with LCD subpixel rendering and wrapping enabled
@@ -3271,22 +3271,22 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryRenderLcdWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryRenderLcdWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/> overload instead.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderShadedWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderShadedWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderLcdWrappedText(ReadOnlySpan<byte> text, Color<byte> foregroundColor, Color<byte> backgroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderLcdWrappedString(ReadOnlySpan<byte> text, Color<byte> foregroundColor, Color<byte> backgroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			fixed (byte* textPtr = text)
 			{
-				return TryRenderLcdWrappedText(textPtr, unchecked((nuint)text.Length), foregroundColor, backgroundColor, wrapWidth, out surface);
+				return TryRenderLcdWrappedString(textPtr, unchecked((nuint)text.Length), foregroundColor, backgroundColor, wrapWidth, out surface);
 			}
 		}
 	}
@@ -3310,17 +3310,17 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryRenderLcdWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryRenderLcdWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderLcdWrappedText(ReadOnlySpan<byte> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
-		=> TryRenderLcdWrappedText(text, foregroundColor, backgroundColor, wrapWidth: 0, out surface);
+	public bool TryRenderLcdWrappedString(ReadOnlySpan<byte> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
+		=> TryRenderLcdWrappedString(text, foregroundColor, backgroundColor, wrapWidth: 0, out surface);
 
 	/// <summary>
 	/// Tries to render a text with this font, with LCD subpixel rendering and wrapping enabled
@@ -3344,16 +3344,16 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryRenderLcdWrappedText(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryRenderLcdWrappedString(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/> overload instead.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(byte*, nuint, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderShadedWrappedText(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(byte*, nuint, Color{byte}, int, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(byte*, nuint, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderShadedWrappedString(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(byte*, nuint, Color{byte}, int, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryRenderLcdWrappedText(byte* text, nuint textLength, Color<byte> foregroundColor, Color<byte> backgroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
+	public unsafe bool TryRenderLcdWrappedString(byte* text, nuint textLength, Color<byte> foregroundColor, Color<byte> backgroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
 	{
 		var surfacePtr = TTF_RenderText_LCD_Wrapped(mFont, text, textLength, foregroundColor, backgroundColor, wrapWidth);
 
@@ -3387,17 +3387,17 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(byte*, nuint, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedWrappedText(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(byte*, nuint, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(byte*, nuint, Color{byte}, out Surface?)"/>, <see cref="TryRenderShadedWrappedString(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(byte*, nuint, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryRenderLcdWrappedText(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryRenderLcdWrappedString(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryRenderLcdWrappedText(byte* text, nuint textLength, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
-		=> TryRenderLcdWrappedText(text, textLength, foregroundColor, backgroundColor, wrapWidth: 0, out surface);
+	public unsafe bool TryRenderLcdWrappedString(byte* text, nuint textLength, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
+		=> TryRenderLcdWrappedString(text, textLength, foregroundColor, backgroundColor, wrapWidth: 0, out surface);
 
 	/// <summary>
 	/// Tries to render a text with this font, with high-quality palettized rendering
@@ -3418,22 +3418,22 @@ public sealed partial class Font : IDisposable
 	/// <para>
 	/// The rendered text will not be wrapped, even when encountering new line characters.
 	/// The resulting surface will contain a single line of text and will be as wide as the rendered text requires.
-	/// You can use <see cref="TryRenderShadedWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
+	/// You can use <see cref="TryRenderShadedWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdText(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdString(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderShadedText(ReadOnlySpan<char> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderShadedString(ReadOnlySpan<char> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
 
-			return TryRenderShadedText(textUtf8.Buffer, length, foregroundColor, backgroundColor, out surface);
+			return TryRenderShadedString(textUtf8.Buffer, length, foregroundColor, backgroundColor, out surface);
 		}
 	}
 
@@ -3456,22 +3456,22 @@ public sealed partial class Font : IDisposable
 	/// <para>
 	/// The rendered text will not be wrapped, even when encountering new line characters.
 	/// The resulting surface will contain a single line of text and will be as wide as the rendered text requires.
-	/// You can use <see cref="TryRenderShadedWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
+	/// You can use <see cref="TryRenderShadedWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedText(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidText(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedString(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidString(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderShadedText(ReadOnlySpan<byte> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderShadedString(ReadOnlySpan<byte> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			fixed (byte* textPtr = text)
 			{
-				return TryRenderShadedText(textPtr, unchecked((nuint)text.Length), foregroundColor, backgroundColor, out surface);
+				return TryRenderShadedString(textPtr, unchecked((nuint)text.Length), foregroundColor, backgroundColor, out surface);
 			}
 		}
 	}
@@ -3496,16 +3496,16 @@ public sealed partial class Font : IDisposable
 	/// <para>
 	/// The rendered text will not be wrapped, even when encountering new line characters.
 	/// The resulting surface will contain a single line of text and will be as wide as the rendered text requires.
-	/// You can use <see cref="TryRenderShadedWrappedText(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
+	/// You can use <see cref="TryRenderShadedWrappedString(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedText(byte*, nuint, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdText(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidText(byte*, nuint, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedString(byte*, nuint, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdString(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidString(byte*, nuint, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryRenderShadedText(byte* text, nuint textLength, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
+	public unsafe bool TryRenderShadedString(byte* text, nuint textLength, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
 	{
 		var surfacePtr = TTF_RenderText_Shaded(mFont, text, textLength, foregroundColor, backgroundColor);
 
@@ -3541,22 +3541,22 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryRenderShadedWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryRenderShadedWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/> overload instead.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderLcdWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderLcdWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderShadedWrappedText(ReadOnlySpan<char> text, Color<byte> foregroundColor, Color<byte> backgroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderShadedWrappedString(ReadOnlySpan<char> text, Color<byte> foregroundColor, Color<byte> backgroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
 
-			return TryRenderShadedWrappedText(textUtf8.Buffer, length, foregroundColor, backgroundColor, wrapWidth, out surface);
+			return TryRenderShadedWrappedString(textUtf8.Buffer, length, foregroundColor, backgroundColor, wrapWidth, out surface);
 		}
 	}
 
@@ -3580,17 +3580,17 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryRenderShadedWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryRenderShadedWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderShadedWrappedText(ReadOnlySpan<char> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
-		=> TryRenderShadedWrappedText(text, foregroundColor, backgroundColor, wrapWidth: 0, out surface);
+	public bool TryRenderShadedWrappedString(ReadOnlySpan<char> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
+		=> TryRenderShadedWrappedString(text, foregroundColor, backgroundColor, wrapWidth: 0, out surface);
 
 	/// <summary>
 	/// Tries to render a text with this font, with high-quality palettized rendering and wrapping enabled
@@ -3614,22 +3614,22 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryRenderShadedWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryRenderShadedWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/> overload instead.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderLcdWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderLcdWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderShadedWrappedText(ReadOnlySpan<byte> text, Color<byte> foregroundColor, Color<byte> backgroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderShadedWrappedString(ReadOnlySpan<byte> text, Color<byte> foregroundColor, Color<byte> backgroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			fixed (byte* textPtr = text)
 			{
-				return TryRenderShadedWrappedText(textPtr, unchecked((nuint)text.Length), foregroundColor, backgroundColor, wrapWidth, out surface);
+				return TryRenderShadedWrappedString(textPtr, unchecked((nuint)text.Length), foregroundColor, backgroundColor, wrapWidth, out surface);
 			}
 		}
 	}
@@ -3654,17 +3654,17 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryRenderShadedWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryRenderShadedWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderShadedWrappedText(ReadOnlySpan<byte> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
-		=> TryRenderShadedWrappedText(text, foregroundColor, backgroundColor, wrapWidth: 0, out surface);
+	public bool TryRenderShadedWrappedString(ReadOnlySpan<byte> text, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
+		=> TryRenderShadedWrappedString(text, foregroundColor, backgroundColor, wrapWidth: 0, out surface);
 
 	/// <summary>
 	/// Tries to render a text with this font, with high-quality palettized rendering and wrapping enabled
@@ -3689,16 +3689,16 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryRenderShadedWrappedText(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryRenderShadedWrappedString(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/> overload instead.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(byte*, nuint, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderLcdWrappedText(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(byte*, nuint, Color{byte}, int, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(byte*, nuint, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderLcdWrappedString(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(byte*, nuint, Color{byte}, int, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryRenderShadedWrappedText(byte* text, nuint textLength, Color<byte> foregroundColor, Color<byte> backgroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
+	public unsafe bool TryRenderShadedWrappedString(byte* text, nuint textLength, Color<byte> foregroundColor, Color<byte> backgroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
 	{
 		var surfacePtr = TTF_RenderText_Shaded_Wrapped(mFont, text, textLength, foregroundColor, backgroundColor, wrapWidth);
 
@@ -3733,17 +3733,17 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(byte*, nuint, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdWrappedText(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedText(byte*, nuint, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(byte*, nuint, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdWrappedString(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderSolidWrappedString(byte*, nuint, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryRenderShadedWrappedText(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryRenderShadedWrappedString(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryRenderShadedWrappedText(byte* text, nuint textLength, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
-		=> TryRenderShadedWrappedText(text, textLength, foregroundColor, backgroundColor, wrapWidth: 0, out surface);
+	public unsafe bool TryRenderShadedWrappedString(byte* text, nuint textLength, Color<byte> foregroundColor, Color<byte> backgroundColor, [NotNullWhen(true)] out Surface? surface)
+		=> TryRenderShadedWrappedString(text, textLength, foregroundColor, backgroundColor, wrapWidth: 0, out surface);
 
 	/// <summary>
 	/// Tries to render a text with this font, with fast-quality solid rendering
@@ -3763,22 +3763,22 @@ public sealed partial class Font : IDisposable
 	/// <para>
 	/// The rendered text will not be wrapped, even when encountering new line characters.
 	/// The resulting surface will contain a single line of text and will be as wide as the rendered text requires.
-	/// You can use <see cref="TryRenderShadedWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
+	/// You can use <see cref="TryRenderShadedWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdText(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderShadedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdString(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderShadedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderSolidText(ReadOnlySpan<char> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderSolidString(ReadOnlySpan<char> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
 
-			return TryRenderSolidText(textUtf8.Buffer, length, foregroundColor, out surface);
+			return TryRenderSolidString(textUtf8.Buffer, length, foregroundColor, out surface);
 		}
 	}
 
@@ -3800,22 +3800,22 @@ public sealed partial class Font : IDisposable
 	/// <para>
 	/// The rendered text will not be wrapped, even when encountering new line characters.
 	/// The resulting surface will contain a single line of text and will be as wide as the rendered text requires.
-	/// You can use <see cref="TryRenderShadedWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
+	/// You can use <see cref="TryRenderShadedWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedText(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderShadedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedString(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderShadedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderSolidText(ReadOnlySpan<byte> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderSolidString(ReadOnlySpan<byte> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			fixed (byte* textPtr = text)
 			{
-				return TryRenderSolidText(textPtr, unchecked((nuint)text.Length), foregroundColor, out surface);
+				return TryRenderSolidString(textPtr, unchecked((nuint)text.Length), foregroundColor, out surface);
 			}
 		}
 	}
@@ -3839,16 +3839,16 @@ public sealed partial class Font : IDisposable
 	/// <para>
 	/// The rendered text will not be wrapped, even when encountering new line characters.
 	/// The resulting surface will contain a single line of text and will be as wide as the rendered text requires.
-	/// You can use <see cref="TryRenderShadedWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
+	/// You can use <see cref="TryRenderShadedWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/> instead, if you want to render text that wraps to multiple lines.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedText(byte*, nuint, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdText(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderShadedText(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedString(byte*, nuint, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdString(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderShadedString(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryRenderSolidText(byte* text, nuint textLength, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
+	public unsafe bool TryRenderSolidString(byte* text, nuint textLength, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
 	{
 		var surfacePtr = TTF_RenderText_Solid(mFont, text, textLength, foregroundColor);
 
@@ -3883,22 +3883,22 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryRenderSolidWrappedText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryRenderSolidWrappedString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/> overload instead.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderLcdWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderShadedWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderLcdWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderShadedWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, int, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderSolidWrappedText(ReadOnlySpan<char> text, Color<byte> foregroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderSolidWrappedString(ReadOnlySpan<char> text, Color<byte> foregroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
 
-			return TryRenderSolidWrappedText(textUtf8.Buffer, length, foregroundColor, wrapWidth, out surface);
+			return TryRenderSolidWrappedString(textUtf8.Buffer, length, foregroundColor, wrapWidth, out surface);
 		}
 	}
 
@@ -3921,17 +3921,17 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderShadedWrappedText(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{char}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderShadedWrappedString(ReadOnlySpan{char}, Color{byte}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryRenderSolidWrappedText(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryRenderSolidWrappedString(ReadOnlySpan{char}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderSolidWrappedText(ReadOnlySpan<char> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
-		=> TryRenderSolidWrappedText(text, foregroundColor, wrapWidth: 0, out surface);
+	public bool TryRenderSolidWrappedString(ReadOnlySpan<char> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
+		=> TryRenderSolidWrappedString(text, foregroundColor, wrapWidth: 0, out surface);
 
 	/// <summary>
 	/// Tries to render a text with this font, with fast-quality solid rendering
@@ -3954,22 +3954,22 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryRenderSolidWrappedText(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryRenderSolidWrappedString(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/> overload instead.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderLcdWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderShadedWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderLcdWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderShadedWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, int, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderSolidWrappedText(ReadOnlySpan<byte> text, Color<byte> foregroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
+	public bool TryRenderSolidWrappedString(ReadOnlySpan<byte> text, Color<byte> foregroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
 	{
 		unsafe
 		{
 			fixed (byte* textPtr = text)
 			{
-				return TryRenderSolidWrappedText(textPtr, unchecked((nuint)text.Length), foregroundColor, wrapWidth, out surface);
+				return TryRenderSolidWrappedString(textPtr, unchecked((nuint)text.Length), foregroundColor, wrapWidth, out surface);
 			}
 		}
 	}
@@ -3993,17 +3993,17 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderShadedWrappedText(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(ReadOnlySpan{byte}, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderShadedWrappedString(ReadOnlySpan{byte}, Color{byte}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryRenderSolidWrappedText(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryRenderSolidWrappedString(ReadOnlySpan{byte}, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public bool TryRenderSolidWrappedText(ReadOnlySpan<byte> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
-		=> TryRenderSolidWrappedText(text, foregroundColor, wrapWidth: 0, out surface);
+	public bool TryRenderSolidWrappedString(ReadOnlySpan<byte> text, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
+		=> TryRenderSolidWrappedString(text, foregroundColor, wrapWidth: 0, out surface);
 
 	/// <summary>
 	/// Tries to render a text with this font, with fast-quality solid rendering
@@ -4027,16 +4027,16 @@ public sealed partial class Font : IDisposable
 	/// </para>
 	/// <para>
 	/// If <paramref name="wrapWidth"/> is <c>0</c>, the text will only wrap on newline characters.
-	/// Alternatively, you can use the <see cref="TryRenderSolidWrappedText(byte*, nuint, Color{byte}, out Surface?)"/> overload instead.
+	/// Alternatively, you can use the <see cref="TryRenderSolidWrappedString(byte*, nuint, Color{byte}, out Surface?)"/> overload instead.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(byte*, nuint, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderLcdWrappedText(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderShadedWrappedText(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(byte*, nuint, Color{byte}, int, out Surface?)"/>, <see cref="TryRenderLcdWrappedString(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/>, or <see cref="TryRenderShadedWrappedString(byte*, nuint, Color{byte}, Color{byte}, int, out Surface?)"/>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryRenderSolidWrappedText(byte* text, nuint textLength, Color<byte> foregroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
+	public unsafe bool TryRenderSolidWrappedString(byte* text, nuint textLength, Color<byte> foregroundColor, int wrapWidth, [NotNullWhen(true)] out Surface? surface)
 	{
 		var surfacePtr = TTF_RenderText_Solid_Wrapped(mFont, text, textLength, foregroundColor, wrapWidth);
 
@@ -4070,17 +4070,17 @@ public sealed partial class Font : IDisposable
 	/// The text is only wrapped to multiple lines upon encountering newline characters.
 	/// </para>
 	/// <para>
-	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedText(byte*, nuint, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdWrappedText(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderShadedWrappedText(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>.
+	/// You can alternatively render with various other levels of quality using <see cref="TryRenderBlendedWrappedString(byte*, nuint, Color{byte}, out Surface?)"/>, <see cref="TryRenderLcdWrappedString(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>, or <see cref="TryRenderShadedWrappedString(byte*, nuint, Color{byte}, Color{byte}, out Surface?)"/>.
 	/// </para>
 	/// <para>
-	/// This method is a convenience overload for <see cref="TryRenderSolidWrappedText(byte*, nuint, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
+	/// This method is a convenience overload for <see cref="TryRenderSolidWrappedString(byte*, nuint, Color{byte}, int, out Surface?)"/> with "wrapWidth" set to <c>0</c>.
 	/// </para>
 	/// <para>
 	/// This method should be only called on the thread that created the font.
 	/// </para>
 	/// </remarks>
-	public unsafe bool TryRenderSolidWrappedText(byte* text, nuint textLength, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
-		=> TryRenderSolidWrappedText(text, textLength, foregroundColor, wrapWidth: 0, out surface);
+	public unsafe bool TryRenderSolidWrappedString(byte* text, nuint textLength, Color<byte> foregroundColor, [NotNullWhen(true)] out Surface? surface)
+		=> TryRenderSolidWrappedString(text, textLength, foregroundColor, wrapWidth: 0, out surface);
 
 	/// <summary>
 	/// Tries to set the language used for shaping text with this font
