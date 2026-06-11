@@ -80,7 +80,7 @@ public sealed partial class Font : IDisposable
 
 	private unsafe static TTF_Font* CreateWithFileName(string fileName, float size)
 	{
-		using var fileNameUtf8 = NativeStrings.FromUtf16ToUtf8(fileName, out _);
+		using var fileNameUtf8 = NativeStrings.FromUtf16ToUtf8(fileName);
 
 		return TTF_OpenFont(fileNameUtf8.Buffer, size);
 	}
@@ -840,7 +840,9 @@ public sealed partial class Font : IDisposable
 		{
 			unsafe
 			{
-				return NativeStrings.FromUtf8ToUtf16(TTF_GetFontFamilyName(mFont)); // This can return null if mFont is invalid (i.e., has been disposed), or if there was a problem with the font file
+				using var familyNameUtf16 = NativeStrings.FromUtf8ToUtf16(TTF_GetFontFamilyName(mFont));
+
+				return familyNameUtf16.ToManaged();  // This can return null if mFont is invalid (i.e., has been disposed), or if there was a problem with the font file
 			}
 		}
 	}
@@ -1341,7 +1343,9 @@ public sealed partial class Font : IDisposable
 		{
 			unsafe
 			{
-				return NativeStrings.FromUtf8ToUtf16(TTF_GetFontStyleName(mFont)); // This can return null if mFont is invalid (i.e., has been disposed), or if there was a problem with the font file
+				using var styleNameUtf16 = NativeStrings.FromUtf8ToUtf16(TTF_GetFontStyleName(mFont));
+
+				return styleNameUtf16.ToManaged();  // This can return null if mFont is invalid (i.e., has been disposed), or if there was a problem with the font file
 			}
 		}
 	}
@@ -1929,9 +1933,9 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
+			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text);
 
-			return TryGetStringSize(textUtf8.Buffer, length, out width, out height);
+			return TryGetStringSize(textUtf8.Buffer, textUtf8.Length, out width, out height);
 		}
 	}
 
@@ -2021,9 +2025,9 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
+			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text);
 
-			return TryGetWrappedStringSize(textUtf8.Buffer, length, wrapWidth, out width, out height);
+			return TryGetWrappedStringSize(textUtf8.Buffer, textUtf8.Length, wrapWidth, out width, out height);
 		}
 	}
 
@@ -2201,9 +2205,9 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var textLength);
+			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text);
 
-			bool result = TryMeasureString(textUtf8.Buffer, textLength, maxWidth, out width, out var byteLength);
+			bool result = TryMeasureString(textUtf8.Buffer, textUtf8.Length, maxWidth, out width, out var byteLength);
 
 			// TODO: is this good enough for now? 
 			// I mean the only real issues here are performance and that we potentially have to truncate the text if its byte length exceeds int.MaxValue.
@@ -2758,9 +2762,9 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
+			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text);
 
-			return TryRenderBlendedString(textUtf8.Buffer, length, foregroundColor, out surface);
+			return TryRenderBlendedString(textUtf8.Buffer, textUtf8.Length, foregroundColor, out surface);
 		}
 	}
 
@@ -2878,9 +2882,9 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
+			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text);
 
-			return TryRenderBlendedWrappedString(textUtf8.Buffer, length, foregroundColor, wrapWidth, out surface);
+			return TryRenderBlendedWrappedString(textUtf8.Buffer, textUtf8.Length, foregroundColor, wrapWidth, out surface);
 		}
 	}
 
@@ -3093,9 +3097,9 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
+			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text);
 
-			return TryRenderLcdString(textUtf8.Buffer, length, foregroundColor, backgroundColor, out surface);
+			return TryRenderLcdString(textUtf8.Buffer, textUtf8.Length, foregroundColor, backgroundColor, out surface);
 		}
 	}
 
@@ -3213,9 +3217,9 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
+			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text);
 
-			return TryRenderLcdWrappedString(textUtf8.Buffer, length, foregroundColor, backgroundColor, wrapWidth, out surface);
+			return TryRenderLcdWrappedString(textUtf8.Buffer, textUtf8.Length, foregroundColor, backgroundColor, wrapWidth, out surface);
 		}
 	}
 
@@ -3431,9 +3435,9 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
+			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text);
 
-			return TryRenderShadedString(textUtf8.Buffer, length, foregroundColor, backgroundColor, out surface);
+			return TryRenderShadedString(textUtf8.Buffer, textUtf8.Length, foregroundColor, backgroundColor, out surface);
 		}
 	}
 
@@ -3554,9 +3558,9 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
+			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text);
 
-			return TryRenderShadedWrappedString(textUtf8.Buffer, length, foregroundColor, backgroundColor, wrapWidth, out surface);
+			return TryRenderShadedWrappedString(textUtf8.Buffer, textUtf8.Length, foregroundColor, backgroundColor, wrapWidth, out surface);
 		}
 	}
 
@@ -3776,9 +3780,9 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
+			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text);
 
-			return TryRenderSolidString(textUtf8.Buffer, length, foregroundColor, out surface);
+			return TryRenderSolidString(textUtf8.Buffer, textUtf8.Length, foregroundColor, out surface);
 		}
 	}
 
@@ -3896,9 +3900,9 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text, out var length);
+			using var textUtf8 = NativeStrings.FromUtf16ToUtf8(text);
 
-			return TryRenderSolidWrappedString(textUtf8.Buffer, length, foregroundColor, wrapWidth, out surface);
+			return TryRenderSolidWrappedString(textUtf8.Buffer, textUtf8.Length, foregroundColor, wrapWidth, out surface);
 		}
 	}
 
@@ -4099,7 +4103,7 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			using var languageUtf8 = NativeStrings.FromUtf16ToUtf8(language, out _);
+			using var languageUtf8 = NativeStrings.FromUtf16ToUtf8(language);
 
 			return TTF_SetFontLanguage(mFont, languageUtf8.Buffer);
 		}
