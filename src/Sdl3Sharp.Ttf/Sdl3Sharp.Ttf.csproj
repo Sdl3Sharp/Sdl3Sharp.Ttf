@@ -7,7 +7,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
-    <DefineConstants>$(DefineConstants);SDL_TTF3_2_2_OR_GREATER;SDL_TTF3_4_0_OR_GREATER</DefineConstants>
+    <DefineConstants>$(DefineConstants);SDL_TTF3_2_2_OR_GREATER</DefineConstants>
     
     <PackageId>$(PackageId).Core</PackageId>
     <Description>$(Description) - "Core" package - just contains the managed binding code</Description>
