@@ -154,9 +154,8 @@ internal static class NativeStringHelpers
 							utf8Length += bytesConsumed;
 							break;
 
-						// We don't do anything in the ExcludeWholePair case, so we can just skip it.
-						//case SurrogatePairSplittingBehavior.ExcludeWholePair:
-						//	break;
+						case SurrogatePairSplittingBehavior.ExcludeWholePair:
+							break;
 
 						default: // SurrogatePairSplittingBehavior.Fail or any unrecognized value
 							return false;
