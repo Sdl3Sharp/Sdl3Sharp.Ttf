@@ -1,11 +1,20 @@
-﻿using System.Buffers;
+﻿using System;
+using System.Buffers;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Sdl3Sharp.Ttf.Internal;
 
-internal static class NativeStringHelpers
+internal static partial class NativeStringHelpers
 {
+	public static ReadOnlySpan<byte> EmptyNullTerminatedUtf8 { [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)] get => "\0"u8; }
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+	public static ReadOnlySpan<byte> NullTerminateUtf8IfEmpty(ReadOnlySpan<byte> utf8Bytes) => utf8Bytes.IsEmpty
+		? EmptyNullTerminatedUtf8
+		: utf8Bytes;
+
 	public enum SurrogatePairSplittingBehavior
 	{
 		Fail,

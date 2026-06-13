@@ -1959,7 +1959,7 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			fixed (byte* textPtr = text)
+			fixed (byte* textPtr = NativeStringHelpers.NullTerminateUtf8IfEmpty(text))
 			{
 				return TryGetStringSize(textPtr, unchecked((nuint)text.Length), out width, out height);
 			}
@@ -2084,7 +2084,7 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			fixed (byte* textPtr = text)
+			fixed (byte* textPtr = NativeStringHelpers.NullTerminateUtf8IfEmpty(text))
 			{
 				return TryGetWrappedStringSize(textPtr, unchecked((nuint)text.Length), wrapWidth, out width, out height);
 			}
@@ -2240,7 +2240,7 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			fixed (byte* textPtr = text)
+			fixed (byte* textPtr = NativeStringHelpers.NullTerminateUtf8IfEmpty(text))
 			{
 				bool result = TryMeasureString(textPtr, unchecked((nuint)text.Length), maxWidth, out width, out var byteLength);
 
@@ -2798,7 +2798,7 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			fixed (byte* textPtr = text)
+			fixed (byte* textPtr = NativeStringHelpers.NullTerminateUtf8IfEmpty(text))
 			{
 				return TryRenderBlendedString(textPtr, unchecked((nuint)text.Length), foregroundColor, out surface);
 			}
@@ -2951,7 +2951,7 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			fixed (byte* textPtr = text)
+			fixed (byte* textPtr = NativeStringHelpers.NullTerminateUtf8IfEmpty(text))
 			{
 				return TryRenderBlendedWrappedString(textPtr, unchecked((nuint)text.Length), foregroundColor, wrapWidth, out surface);
 			}
@@ -3134,7 +3134,7 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			fixed (byte* textPtr = text)
+			fixed (byte* textPtr = NativeStringHelpers.NullTerminateUtf8IfEmpty(text))
 			{
 				return TryRenderLcdString(textPtr, unchecked((nuint)text.Length), foregroundColor, backgroundColor, out surface);
 			}
@@ -3288,7 +3288,7 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			fixed (byte* textPtr = text)
+			fixed (byte* textPtr = NativeStringHelpers.NullTerminateUtf8IfEmpty(text))
 			{
 				return TryRenderLcdWrappedString(textPtr, unchecked((nuint)text.Length), foregroundColor, backgroundColor, wrapWidth, out surface);
 			}
@@ -3473,7 +3473,7 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			fixed (byte* textPtr = text)
+			fixed (byte* textPtr = NativeStringHelpers.NullTerminateUtf8IfEmpty(text))
 			{
 				return TryRenderShadedString(textPtr, unchecked((nuint)text.Length), foregroundColor, backgroundColor, out surface);
 			}
@@ -3631,7 +3631,7 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			fixed (byte* textPtr = text)
+			fixed (byte* textPtr = NativeStringHelpers.NullTerminateUtf8IfEmpty(text))
 			{
 				return TryRenderShadedWrappedString(textPtr, unchecked((nuint)text.Length), foregroundColor, backgroundColor, wrapWidth, out surface);
 			}
@@ -3817,7 +3817,7 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			fixed (byte* textPtr = text)
+			fixed (byte* textPtr = NativeStringHelpers.NullTerminateUtf8IfEmpty(text))
 			{
 				return TryRenderSolidString(textPtr, unchecked((nuint)text.Length), foregroundColor, out surface);
 			}
@@ -3971,7 +3971,7 @@ public sealed partial class Font : IDisposable
 	{
 		unsafe
 		{
-			fixed (byte* textPtr = text)
+			fixed (byte* textPtr = NativeStringHelpers.NullTerminateUtf8IfEmpty(text))
 			{
 				return TryRenderSolidWrappedString(textPtr, unchecked((nuint)text.Length), foregroundColor, wrapWidth, out surface);
 			}
