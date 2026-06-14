@@ -84,7 +84,7 @@ public readonly ref partial struct GpuAtlasDrawData
 	public readonly GpuAtlasDrawSequence[] ToArray() => [..this];
 
 	/// <summary>
-	/// Tries to copy the <see cref="GpuAtlasDrawSequence"/>s in this <see cref="GpuAtlasDrawData"/> to a given destination starting at a specified offset
+	/// Tries to copy the <see cref="GpuAtlasDrawSequence"/>s in this <see cref="GpuAtlasDrawData"/> to a given destination, starting at a specified offset
 	/// </summary>
 	/// <param name="destination">The destination array to copy the <see cref="GpuAtlasDrawSequence"/>s to</param>
 	/// <param name="offset">The offset in the destination array at which to start copying</param>
