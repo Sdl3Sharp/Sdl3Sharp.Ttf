@@ -239,6 +239,8 @@ public sealed partial class Font : IDisposable
 				fileNameBackup = propertiesUsed.TryGetStringValue(PropertyNames.CreateFileNameString, out var existingFileName)
 					? existingFileName
 					: null;
+
+				propertiesUsed.TrySetStringValue(PropertyNames.CreateFileNameString, fileName);
 			}
 
 			if (stream is not null)
@@ -246,6 +248,8 @@ public sealed partial class Font : IDisposable
 				streamBackup = propertiesUsed.TryGetPointerValue(PropertyNames.CreateIOStreamPointer, out var existingStreamPtr)
 					? existingStreamPtr
 					: null;
+
+				propertiesUsed.TrySetPointerValue(PropertyNames.CreateIOStreamPointer, unchecked((IntPtr)stream.Pointer));
 			}
 
 			if (streamOffset is long streamOffsetValue)
@@ -253,6 +257,8 @@ public sealed partial class Font : IDisposable
 				streamOffsetBackup = propertiesUsed.TryGetNumberValue(PropertyNames.CreateIOStreamOffsetNumber, out var existingStreamOffset)
 					? existingStreamOffset
 					: null;
+
+				propertiesUsed.TrySetNumberValue(PropertyNames.CreateIOStreamOffsetNumber, streamOffsetValue);
 			}
 
 			if (closeAfterwards is bool closeAfterwardsValue)
@@ -260,6 +266,8 @@ public sealed partial class Font : IDisposable
 				closeAfterwardsBackup = propertiesUsed.TryGetBooleanValue(PropertyNames.CreateIOStreamAutoCloseBoolean, out var existingCloseAfterwards)
 					? existingCloseAfterwards
 					: null;
+
+				propertiesUsed.TrySetBooleanValue(PropertyNames.CreateIOStreamAutoCloseBoolean, closeAfterwardsValue);
 			}
 
 			if (size is float sizeValue)
@@ -267,6 +275,8 @@ public sealed partial class Font : IDisposable
 				sizeBackup = propertiesUsed.TryGetFloatValue(PropertyNames.CreateSizeFloat, out var existingSize)
 					? existingSize
 					: null;
+
+				propertiesUsed.TrySetFloatValue(PropertyNames.CreateSizeFloat, sizeValue);
 			}
 
 			if (faceIndex is int faceIndexValue)
@@ -274,6 +284,8 @@ public sealed partial class Font : IDisposable
 				faceIndexBackup = propertiesUsed.TryGetNumberValue(PropertyNames.CreateFaceNumber, out var existingFaceIndex)
 					? unchecked((int)existingFaceIndex)
 					: null;
+
+				propertiesUsed.TrySetNumberValue(PropertyNames.CreateFaceNumber, faceIndexValue);
 			}
 
 			if (horizontalDpi is int horizontalDpiValue)
@@ -281,6 +293,8 @@ public sealed partial class Font : IDisposable
 				horizontalDpiBackup = propertiesUsed.TryGetNumberValue(PropertyNames.CreateHorizontalDpiNumber, out var existingHorizontalDpi)
 					? unchecked((int)existingHorizontalDpi)
 					: null;
+
+				propertiesUsed.TrySetNumberValue(PropertyNames.CreateHorizontalDpiNumber, horizontalDpiValue);
 			}
 
 			if (verticalDpi is int verticalDpiValue)
@@ -288,6 +302,8 @@ public sealed partial class Font : IDisposable
 				verticalDpiBackup = propertiesUsed.TryGetNumberValue(PropertyNames.CreateVerticalDpiNumber, out var existingVerticalDpi)
 					? unchecked((int)existingVerticalDpi)
 					: null;
+
+				propertiesUsed.TrySetNumberValue(PropertyNames.CreateVerticalDpiNumber, verticalDpiValue);
 			}
 
 			if (exisitingFont is not null)
@@ -295,6 +311,8 @@ public sealed partial class Font : IDisposable
 				existingFontBackup = propertiesUsed.TryGetPointerValue(PropertyNames.CreateExistingFontPointer, out var existingFontPtr)
 					? existingFontPtr
 					: null;
+
+				propertiesUsed.TrySetPointerValue(PropertyNames.CreateExistingFontPointer, unchecked((IntPtr)exisitingFont.mFont));
 			}
 		}
 
