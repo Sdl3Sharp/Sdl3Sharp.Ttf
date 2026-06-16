@@ -1,9 +1,11 @@
-﻿using Sdl3Sharp.SourceGeneration;
+﻿using Sdl3Sharp.Internal;
+using Sdl3Sharp.SourceGeneration;
+using Sdl3Sharp.Ttf.Authoring;
 using Sdl3Sharp.Ttf.Internal.Interop;
 using Sdl3Sharp.Video;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using static System.Net.WebRequestMethods;
 using CBool = Sdl3Sharp.Internal.Interop.CBool;
 
 namespace Sdl3Sharp.Ttf;
@@ -18,12 +20,14 @@ partial class Text
 
 		public readonly int RefCount;
 
-		public readonly TTF_TextData* Internal;
+		public readonly TextData.TTF_TextData* Internal;
 	}
 
-	// Used for opaque pointers
-	[StructLayout(LayoutKind.Sequential, Size = 0)]
-	internal readonly struct TTF_TextData;
+	[FormattedConstant(SdlErrorHelper.ParameterInvalidErrorFormat, nameof(text))]
+	private unsafe static partial string GetInvalidTextErrorMessageUtf16(TTF_Text* text = default);
+
+	[FormattedConstant(SdlErrorHelper.ParameterInvalidErrorFormat, nameof(text))]
+	private unsafe static partial ReadOnlySpan<byte> GetInvalidTextErrorMessageUtf8(TTF_Text* text = default);
 
 	/// <summary>
 	/// Appends UTF-8 text to a text object
@@ -288,7 +292,7 @@ partial class Text
 	/// This function should be called on the thread that created the text.
 	/// </para>
 	/// </remarks>
-	/// <seealso href="https://wiki.libsdl.org/SDL3_ttf/TTF_GetTextFont">TTF_GetTextFont</seealso>
+	/// <seealso href="https://wiki.libsdl.org/SDL3_ttf/TTF_GetTextPosition">TTF_GetTextPosition</seealso>
 	[NativeImportFunction<Library>(CallConvs = [typeof(CallConvCdecl)])]
 	internal unsafe static partial CBool TTF_GetTextPosition(TTF_Text* text, int* x, int* y);
 
@@ -476,7 +480,7 @@ partial class Text
 	/// </remarks>
 	/// <seealso href="https://wiki.libsdl.org/SDL3_ttf/TTF_SetTextColor">TTF_SetTextColor</seealso>
 	[NativeImportFunction<Library>(CallConvs = [typeof(CallConvCdecl)])]
-	internal unsafe static partial CBool TTF_SetTextColor(TTF_Text* text, byte* r, byte* g, byte* b, byte* a);
+	internal unsafe static partial CBool TTF_SetTextColor(TTF_Text* text, byte r, byte g, byte b, byte a);
 
 	/// <summary>
 	/// Sets the color of a text object
@@ -497,7 +501,7 @@ partial class Text
 	/// </remarks>
 	/// <seealso href="https://wiki.libsdl.org/SDL3_ttf/TTF_SetTextColorFloat">TTF_SetTextColorFloat</seealso>
 	[NativeImportFunction<Library>(CallConvs = [typeof(CallConvCdecl)])]
-	internal unsafe static partial CBool TTF_SetTextColorFloat(TTF_Text* text, float* r, float* g, float* b, float* a);
+	internal unsafe static partial CBool TTF_SetTextColorFloat(TTF_Text* text, float r, float g, float b, float a);
 
 	/// <summary>
 	/// Sets the direction to be used for text shaping a text object
