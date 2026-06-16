@@ -76,10 +76,10 @@ public unsafe sealed class NativeStringHelpersTests
 	}
 
 	[Theory]
-	[InlineData(-1, 0)]
 	[InlineData(0, -1)]
+	[InlineData(1, -1)]
 	[InlineData(-1, -1)]
-	public void TryGetUtf8OffsetAndLength_WithNegativeInputs_ReturnsFalse(int utf16Offset, int utf16Length)
+	public void TryGetUtf8OffsetAndLength_WithNegativeLength_ReturnsFalse(int utf16Offset, int utf16Length)
 	{
 		ReadOnlySpan<byte> utf8Text = "Hello\0"u8;
 
@@ -90,6 +90,122 @@ public unsafe sealed class NativeStringHelpersTests
 			Assert.False(success);
 			Assert.Equal(0, utf8Offset);
 			Assert.Equal(0, utf8Length);
+		}
+	}
+
+	[Theory]
+	[InlineData(-1, 1, -1, 1)]
+	[InlineData(-2, 1, -4, 3)]
+	[InlineData(-4, 0, -8, 0)]
+	public void TryGetUtf8OffsetAndLength_WithNegativeOffset_ReturnsNegativeUtf8OffsetFromEnd(int utf16Offset, int utf16Length, int expectedUtf8Offset, int expectedUtf8Length)
+	{
+		ReadOnlySpan<byte> utf8Text = "A€中B\0"u8;
+
+		fixed (byte* utf8Ptr = utf8Text)
+		{
+			var success = NativeStringHelpers.TryGetUtf8OffsetAndLength(utf8Ptr, utf16Offset, utf16Length, out var utf8Offset, out var utf8Length);
+
+			Assert.True(success);
+			Assert.Equal(expectedUtf8Offset, utf8Offset);
+			Assert.Equal(expectedUtf8Length, utf8Length);
+		}
+	}
+
+	[Fact]
+	public void TryGetUtf8OffsetAndLength_WhenNegativeOffsetExceedsTextLength_ReturnsFalse()
+	{
+		ReadOnlySpan<byte> utf8Text = "A€中B\0"u8;
+
+		fixed (byte* utf8Ptr = utf8Text)
+		{
+			var success = NativeStringHelpers.TryGetUtf8OffsetAndLength(utf8Ptr, utf16Offset: -5, utf16Length: 0, out _, out _);
+
+			Assert.False(success);
+		}
+	}
+
+	[Fact]
+	public void TryGetUtf8OffsetAndLength_WhenNegativeOffsetRangeExceedsTextLength_ReturnsFalse()
+	{
+		ReadOnlySpan<byte> utf8Text = "A€中B\0"u8;
+
+		fixed (byte* utf8Ptr = utf8Text)
+		{
+			var success = NativeStringHelpers.TryGetUtf8OffsetAndLength(utf8Ptr, utf16Offset: -1, utf16Length: 2, out _, out _);
+
+			Assert.False(success);
+		}
+	}
+
+	[Theory]
+	[InlineData((int)NativeStringHelpers.SurrogatePairSplittingBehavior.Fail, false, 0, 0)]
+	[InlineData((int)NativeStringHelpers.SurrogatePairSplittingBehavior.IncludeWholePair, true, -5, 0)]
+	[InlineData((int)NativeStringHelpers.SurrogatePairSplittingBehavior.ExcludeWholePair, true, -1, 0)]
+	public void TryGetUtf8OffsetAndLength_WhenNegativeOffsetSplitsSurrogatePair_AppliesConfiguredBehavior(
+		int splittingBehavior,
+		bool expectedSuccess,
+		int expectedUtf8Offset,
+		int expectedUtf8Length)
+	{
+		ReadOnlySpan<byte> utf8Text = "A😂B\0"u8;
+
+		fixed (byte* utf8Ptr = utf8Text)
+		{
+			var success = NativeStringHelpers.TryGetUtf8OffsetAndLength(utf8Ptr, utf16Offset: -2, utf16Length: 0, out var utf8Offset, out var utf8Length, (NativeStringHelpers.SurrogatePairSplittingBehavior)splittingBehavior);
+
+			Assert.Equal(expectedSuccess, success);
+
+			if (success)
+			{
+				Assert.Equal(expectedUtf8Offset, utf8Offset);
+				Assert.Equal(expectedUtf8Length, utf8Length);
+			}
+		}
+	}
+
+	[Fact]
+	public void TryGetUtf8OffsetAndLength_WhenNegativeOffsetSplitsSurrogatePairAndLengthIsNonZero_WithExcludeWholePair_ExcludesWholePairFromUtf8Length()
+	{
+		ReadOnlySpan<byte> utf8Text = "A😂B\0"u8;
+
+		fixed (byte* utf8Ptr = utf8Text)
+		{
+			var success = NativeStringHelpers.TryGetUtf8OffsetAndLength(
+				utf8Ptr,
+				utf16Offset: -2,
+				utf16Length: 1,
+				out var utf8Offset,
+				out var utf8Length,
+				NativeStringHelpers.SurrogatePairSplittingBehavior.ExcludeWholePair);
+
+			Assert.True(success);
+			Assert.Equal(-1, utf8Offset);
+			Assert.Equal(0, utf8Length);
+		}
+	}
+
+	[Theory]
+	[InlineData((int)NativeStringHelpers.SurrogatePairSplittingBehavior.Fail, false, 0, 0)]
+	[InlineData((int)NativeStringHelpers.SurrogatePairSplittingBehavior.ExcludeWholePair, true, -1, 0)]
+	public void TryGetUtf8OffsetAndLength_WhenNegativeOffsetAndLengthSplitSurrogatePair_AppliesConfiguredBehavior(
+		int splittingBehavior,
+		bool expectedSuccess,
+		int expectedUtf8Offset,
+		int expectedUtf8Length)
+	{
+		ReadOnlySpan<byte> utf8Text = "A😂B\0"u8;
+
+		fixed (byte* utf8Ptr = utf8Text)
+		{
+			var success = NativeStringHelpers.TryGetUtf8OffsetAndLength(utf8Ptr, utf16Offset: -2, utf16Length: 1, out var utf8Offset, out var utf8Length, (NativeStringHelpers.SurrogatePairSplittingBehavior)splittingBehavior);
+
+			Assert.Equal(expectedSuccess, success);
+
+			if (success)
+			{
+				Assert.Equal(expectedUtf8Offset, utf8Offset);
+				Assert.Equal(expectedUtf8Length, utf8Length);
+			}
 		}
 	}
 
