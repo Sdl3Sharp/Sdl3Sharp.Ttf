@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -48,7 +49,7 @@ partial struct SubStringCollection
 		}
 
 		/// <inheritdoc/>
-		public readonly void Dispose() { }
+		readonly void IDisposable.Dispose() { }
 
 		/// <inheritdoc/>
 		public void Reset() => mIndex = -1;
