@@ -1,7 +1,7 @@
 ﻿using Sdl3Sharp.Internal;
 using Sdl3Sharp.SourceGeneration;
-using Sdl3Sharp.Ttf.Authoring;
 using Sdl3Sharp.Ttf.Internal.Interop;
+using Sdl3Sharp.Ttf.TextEngineImplementation;
 using Sdl3Sharp.Video;
 using System;
 using System.Runtime.CompilerServices;
@@ -159,7 +159,7 @@ partial class Text
 	/// </remarks>
 	/// <seealso href="https://wiki.libsdl.org/SDL3_ttf/TTF_GetGPUTextDrawData">TTF_GetGPUTextDrawData</seealso>
 	[NativeImportFunction<Library>(CallConvs = [typeof(CallConvCdecl)])]
-	internal unsafe static partial GpuAtlasDrawData.Node* TTF_GetGPUTextDrawData(TTF_Text* text);
+	internal unsafe static partial GpuAtlasDrawSequence.TTF_GPUAtlasDrawSequence* TTF_GetGPUTextDrawData(TTF_Text* text);
 
 	/// <summary>
 	/// Gets the next substring in a text object

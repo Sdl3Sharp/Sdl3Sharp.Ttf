@@ -1,5 +1,6 @@
 ﻿using Sdl3Sharp.Internal;
 using Sdl3Sharp.Ttf.Internal;
+using Sdl3Sharp.Ttf.TextEngineImplementation;
 using Sdl3Sharp.Utilities;
 using Sdl3Sharp.Video;
 using Sdl3Sharp.Video.Coloring;
@@ -15,6 +16,12 @@ namespace Sdl3Sharp.Ttf;
 /// <summary>
 /// Represents a virtual text layout that can be rendered with a <see cref="TextEngine"/>
 /// </summary>
+/// <remarks>
+/// <para>
+/// Make sure that you don't <see cref="Font.Dispose()">dispose</see> <see cref="Sdl3Sharp.Ttf.Font"/>s or <see cref="TextEngine.Dispose()">dispose</see> <see cref="TextEngine"/>s that are currently in use by a <see cref="Text"/>.
+/// Always <see cref="Dispose()">dispose</see> the <see cref="Text"/> first before disposing any <see cref="Sdl3Sharp.Ttf.Font"/>s or <see cref="TextEngine"/>s that it uses.
+/// </para>
+/// </remarks>
 public sealed partial class Text : IDisposable
 {
 	private interface IUnsafeConstructorDispatch;
@@ -22,14 +29,21 @@ public sealed partial class Text : IDisposable
 	private static readonly ConcurrentDictionary<IntPtr, WeakReference<Text>> mKnownInstances = [];
 
 	private unsafe TTF_Text* mText;
+	private TextData? mData;
+	private TextEngine? mEngine = null; // We need to keep the managed text engine alive as long as the managed text is alive.
+										// That's why we store a reference to it here.
+										// We don't use this reference for anything else, and rely on TextEngine.TryGetOrCreate to retrieve the managed text engine.
+										// Since we kept the instance alive, it should be still registered and TextEngine.TryGetOrCreate will retrieve the correct one (the same instance).
 
-	internal unsafe Text(TTF_Text* text, bool register)
+	private unsafe Text(TTF_Text* text, TextEngine? engine, bool register)
 	{
 		// We don't need to worry about the ref count of the underlying TTF_Text here and in general,
 		// since it seems totally unused by SDL in any meaningful way.
 		// Therefore we can just treat Text objects like any other ordinary managed wrapper around an unmanaged resource.
 
 		mText = text;
+		mData = new(this);
+		mEngine = engine;
 
 		if (register)
 		{
@@ -83,7 +97,7 @@ public sealed partial class Text : IDisposable
 	}
 
 	private unsafe Text(string? text, Font? font, TextEngine? engine, IUnsafeConstructorDispatch? _ = default) :
-		this(ValidateText(CreateWithManagedString(text, font, engine)), register: true)
+		this(ValidateText(CreateWithManagedString(text, font, engine)), engine, register: true)
 	{ }
 
 	/// <summary>
@@ -111,7 +125,7 @@ public sealed partial class Text : IDisposable
 	}
 
 	private unsafe Text(ReadOnlySpan<char> text, Font? font, TextEngine? engine, IUnsafeConstructorDispatch? _ = default) :
-		this(ValidateText(CreateWithUtf16Text(text, font, engine)), register: true)
+		this(ValidateText(CreateWithUtf16Text(text, font, engine)), engine, register: true)
 	{ }
 
 	/// <summary>
@@ -140,7 +154,7 @@ public sealed partial class Text : IDisposable
 	}
 
 	private unsafe Text(ReadOnlySpan<byte> text, Font? font, TextEngine? engine, IUnsafeConstructorDispatch? _ = default) :
-		this(ValidateText(CreateWithUtf8Text(text, font, engine)), register: true)
+		this(ValidateText(CreateWithUtf8Text(text, font, engine)), engine, register: true)
 	{ }
 
 	/// <summary>
@@ -173,7 +187,7 @@ public sealed partial class Text : IDisposable
 	/// </para>
 	/// </remarks>
 	public unsafe Text(byte* text, nuint length, Font? font = null, TextEngine? engine = null) :
-		this(ValidateText(TTF_CreateText(engine is not null ? engine.Pointer : null, font is not null ? font.Pointer : null, text, length)), register: true)
+		this(ValidateText(TTF_CreateText(engine is not null ? engine.Pointer : null, font is not null ? font.Pointer : null, text, length)), engine, register: true)
 	{ }
 
 	/// <inheritdoc/>
@@ -314,6 +328,9 @@ public sealed partial class Text : IDisposable
 			unsafe
 			{
 				TextEngine.TryGetOrCreate(TTF_GetTextEngine(mText), out var engine);
+
+				mEngine = engine; // just to make sure that we keep the correct text engine alive, in case it wasn't already
+
 				return engine;
 			}
 		}
@@ -322,7 +339,14 @@ public sealed partial class Text : IDisposable
 		{
 			unsafe
 			{
-				SdlErrorHelper.ThrowIfFailed(TTF_SetTextEngine(mText, value is not null ? value.Pointer : null), filterError: GetInvalidTextErrorMessageUtf8());
+				bool success = TTF_SetTextEngine(mText, value is not null ? value.Pointer : null);
+
+				if (success)
+				{
+					mEngine = value; // we need to keep the text engine alive as long as this text is alive
+				}
+
+				SdlErrorHelper.ThrowIfFailed(success, filterError: GetInvalidTextErrorMessageUtf8());
 			}
 		}
 	}
@@ -371,6 +395,8 @@ public sealed partial class Text : IDisposable
 			}
 		}
 	}
+
+	internal TextData? InternalData { [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)] get => mData; }
 
 	/// <summary>
 	/// Gets or sets a value indicating whether whitespace is visible when wrapping rendered text of this <see cref="Text"/>
@@ -703,6 +729,9 @@ public sealed partial class Text : IDisposable
 				
 				mText = null;
 			}
+
+			mData = null;
+			mEngine = null; // there's no issue with potentially letting the text engine die after the text is disposed
 		}
 	}
 
@@ -830,7 +859,7 @@ public sealed partial class Text : IDisposable
 	/// <summary>
 	/// Tries to get the geometry data needed for drawing the text of this <see cref="Text"/> using the <see cref="GpuDevice">GPU</see> from a <see cref="GpuTextEngine"/>
 	/// </summary>
-	/// <param name="gpuDrawData">The GPU geometry data representing the rendered text of this <see cref="Text"/>, if this method returns <c><see langword="true"/></c>; otherwise, <c><see langword="default"/>(<see cref="GpuAtlasDrawData"/>)</c></param>
+	/// <param name="gpuDrawData">The GPU geometry data representing the rendered text of this <see cref="Text"/>, if this method returns <c><see langword="true"/></c>; otherwise, <c><see langword="default"/>(<see cref="GpuAtlasDrawSequenceEnumerable"/>)</c></param>
 	/// <returns><c><see langword="true"/></c>, if the GPU geometry data was successfully retrieved; otherwise, <c><see langword="false"/></c> (check <see cref="Error.TryGet(out string?)"/> for more information)</returns>
 	/// <remarks>
 	/// <para>
@@ -852,7 +881,7 @@ public sealed partial class Text : IDisposable
 	/// This method should only be called from the thread that created the text.
 	/// </para>
 	/// </remarks>
-	public bool TryGetGpuDrawData(out GpuAtlasDrawData gpuDrawData)
+	public bool TryGetGpuDrawData(out GpuAtlasDrawSequenceEnumerable gpuDrawData)
 	{
 		unsafe
 		{
@@ -869,7 +898,7 @@ public sealed partial class Text : IDisposable
 		}
 	}
 
-	internal unsafe static bool TryGetOrCreate(TTF_Text* text, [NotNullWhen(true)] out Text? result)
+	internal unsafe static bool TryGetOrCreate(TTF_Text* text, TextEngine? engine, [NotNullWhen(true)] out Text? result)
 	{
 		// We don't need to worry about the ref count of the underlying TTF_Text here and in general,
 		// since it seems totally unused by SDL in any meaningful way.
@@ -881,18 +910,18 @@ public sealed partial class Text : IDisposable
 			return false;
 		}
 
-		var textRef = mKnownInstances.GetOrAdd(unchecked((IntPtr)text), createRef);
+		var textRef = mKnownInstances.GetOrAdd(unchecked((IntPtr)text), createRef, engine);
 
 		if (!textRef.TryGetTarget(out result))
 		{
-			textRef.SetTarget(result = create(text));
+			textRef.SetTarget(result = create(text, engine));
 		}
 
 		return true;
 
-		static WeakReference<Text> createRef(IntPtr text) => new(create(unchecked((TTF_Text*)text)));
+		static WeakReference<Text> createRef(IntPtr text, TextEngine? engine) => new(create(unchecked((TTF_Text*)text), engine));
 
-		static Text create(TTF_Text* text) => new(text, register: false);
+		static Text create(TTF_Text* text, TextEngine? engine) => new(text, engine, register: false);
 	}
 
 	/// <summary>
