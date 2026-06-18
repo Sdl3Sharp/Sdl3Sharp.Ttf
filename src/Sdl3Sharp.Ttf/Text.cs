@@ -856,6 +856,55 @@ public sealed partial class Text : IDisposable
 		}
 	}
 
+#if SDL_TTF3_3_0_OR_GREATER
+
+	/// <summary>
+	/// Tries to get the geometry data needed for drawing the text of this <see cref="Text"/> using OpenGL from a <see cref="GLTextEngine"/>
+	/// </summary>
+	/// <param name="glDrawData">The OpenGL geometry data representing the rendered text of this <see cref="Text"/>, if this method returns <c><see langword="true"/></c>; otherwise, <c><see langword="default"/>(<see cref="GLAtlasDrawSequenceEnumerable"/>)</c></param>
+	/// <returns><c><see langword="true"/></c>, if the OpenGL geometry data was successfully retrieved; otherwise, <c><see langword="false"/></c> (check <see cref="Error.TryGet(out string?)"/> for more information)</returns>
+	/// <remarks>
+	/// <para>
+	/// This method enables you to draw text using OpenGL. You have to render the resulting geometry yourself using the appropriate OpenGL APIs.
+	/// </para>
+	/// <para>
+	/// This method will return <c><see langword="false"/></c> if the text of this <see cref="Text"/> is empty and contains no text at all.
+	/// </para>
+	/// <para>
+	/// The current <see cref="TextEngine"/> of this <see cref="Text"/> must be a <see cref="GLTextEngine"/> for this method to succeed; otherwise, this method will fail and return <c><see langword="false"/></c>.
+	/// This method will use the <see cref="GLTextEngine"/> associated with the current <see cref="GLTextEngine"/> of this <see cref="Text"/> for constructing the OpenGL geometry data.
+	/// </para>
+	/// <para>
+	/// The horizontal X-axis is taken positive towards the right, and the vertical Y-axis is taken positive upwards for both the vertex and the texture coordinates.
+	/// This follows the same convention as any other of SDL's OpenGL related APIs.
+	/// If you want to use a different coordinate system, you'll have to transform the resulting vertices yourself.
+	/// </para>
+	/// <para>
+	/// If the text looks blocky, try to use linear filtering.
+	/// </para>
+	/// <para>
+	/// This method should only be called from the thread that created the text.
+	/// </para>
+	/// </remarks>
+	public bool TryGetGLDrawData(out GLAtlasDrawSequenceEnumerable glDrawData)
+	{
+		unsafe
+		{
+			var sequence = TTF_GetGLTextDrawData(mText);
+
+			if (sequence is null)
+			{
+				glDrawData = default;
+				return false;
+			}
+
+			glDrawData = new(sequence);
+			return true;
+		}
+	}
+
+#endif
+
 	/// <summary>
 	/// Tries to get the geometry data needed for drawing the text of this <see cref="Text"/> using the <see cref="GpuDevice">GPU</see> from a <see cref="GpuTextEngine"/>
 	/// </summary>
@@ -864,6 +913,9 @@ public sealed partial class Text : IDisposable
 	/// <remarks>
 	/// <para>
 	/// This method enables you to draw text as part of your GPU rendering pipeline. You have to render the resulting geometry yourself using the appropriate GPU APIs.
+	/// </para>
+	/// <para>
+	/// This method will return <c><see langword="false"/></c> if the text of this <see cref="Text"/> is empty and contains no text at all.
 	/// </para>
 	/// <para>
 	/// The current <see cref="TextEngine"/> of this <see cref="Text"/> must be a <see cref="GpuTextEngine"/> for this method to succeed; otherwise, this method will fail and return <c><see langword="false"/></c>.
@@ -885,15 +937,15 @@ public sealed partial class Text : IDisposable
 	{
 		unsafe
 		{
-			var node = TTF_GetGPUTextDrawData(mText);
+			var sequence = TTF_GetGPUTextDrawData(mText);
 
-			if (node is null)
+			if (sequence is null)
 			{
 				gpuDrawData = default;
 				return false;
 			}
 
-			gpuDrawData = new(node);
+			gpuDrawData = new(sequence);
 			return true;
 		}
 	}

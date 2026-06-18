@@ -137,6 +137,34 @@ partial class Text
 	[NativeImportFunction<Library>(CallConvs = [typeof(CallConvCdecl)])]
 	internal unsafe static partial CBool TTF_DrawSurfaceText(TTF_Text* text, int x, int y, Surface.SDL_Surface* surface);
 
+#if SDL_TTF3_3_0_OR_GREATER
+
+	/// <summary>
+	/// Gets the geometry data needed for drawing the text
+	/// </summary>
+	/// <param name="text">The text to draw</param>
+	/// <returns>Returns a NULL terminated linked list of <see href="https://wiki.libsdl.org/SDL3_ttf/TTF_GLAtlasDrawSequence">TTF_GLAtlasDrawSequence</see> objects or NULL if the passed text is empty or in case of failure; call SDL_GetError() for more information</returns>
+	/// <remarks>
+	/// <para>
+	/// <c><paramref name="text"/></c> must have been created using a <see href="https://wiki.libsdl.org/SDL3_ttf/TTF_TextEngine">TTF_TextEngine</see> from <see href="https://wiki.libsdl.org/SDL3_ttf/TTF_CreateGLTextEngine">TTF_CreateGLTextEngine</see>().
+	/// </para>
+	/// <para>
+	/// The positive X-axis is taken towards the right and the positive Y-axis is taken upwards for both the vertex and the texture coordinates, i.e, it follows the same convention used by the OpenGL API.
+	/// If you want to use a different coordinate system you will need to transform the vertices yourself.
+	/// </para>
+	/// <para>
+	/// If the text looks blocky use linear filtering.
+	/// </para>
+	/// <para>
+	/// This function should be called on the thread that created the text.
+	/// </para>
+	/// </remarks>
+	/// <seealso href="https://wiki.libsdl.org/SDL3_ttf/TTF_GetGLTextDrawData">TTF_GetGLTextDrawData</seealso>
+	[NativeImportFunction<Library>(CallConvs = [typeof(CallConvCdecl)])]
+	internal unsafe static partial GLAtlasDrawSequence.TTF_GLAtlasDrawSequence* TTF_GetGLTextDrawData(TTF_Text* text);
+
+#endif
+
 	/// <summary>
 	/// Gets the geometry data needed for drawing the text
 	/// </summary>
