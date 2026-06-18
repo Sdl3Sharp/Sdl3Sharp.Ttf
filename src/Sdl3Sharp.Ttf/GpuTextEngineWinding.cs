@@ -1,7 +1,7 @@
 ﻿namespace Sdl3Sharp.Ttf;
 
 /// <summary>
-/// Represents the winding order of the vertices returned by <see cref="TTF_GetGPUTextDrawData"/>
+/// Represents the winding order of the vertices in a <see cref="GpuAtlasDrawSequence"/> returned by <see cref="Text.TryGetGpuDrawData(out GpuAtlasDrawSequenceEnumerable)"/>
 /// </summary>
 public enum GpuTextEngineWinding
 {
