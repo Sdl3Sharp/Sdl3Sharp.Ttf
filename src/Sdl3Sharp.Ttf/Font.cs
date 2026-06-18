@@ -15,6 +15,12 @@ namespace Sdl3Sharp.Ttf;
 /// <summary>
 /// Represents a font that can be used to render <see cref="Text"/>s, strings, and individual glyphs with various styles
 /// </summary>
+/// <remarks>
+/// <para>
+/// Make sure that you don't <see cref="Dispose()">dispose</see> <see cref="Font"/>s that are currently in use by, for example, <see cref="Text"/> instances.
+/// Always <see cref="Text.Dispose()">dispose</see> the <see cref="Text"/> first before disposing the <see cref="Font"/> that it uses.
+/// </para>
+/// </remarks>
 [DebuggerDisplay($"{{{nameof(DebuggerDisplay)},nq}}")]
 public sealed partial class Font : IDisposable
 {
