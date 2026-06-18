@@ -22,7 +22,7 @@ namespace Sdl3Sharp.Ttf;
 /// </para>
 /// </remarks>
 [DebuggerDisplay($"{{{nameof(DebuggerDisplay)},nq}}")]
-public sealed partial class Font : IDisposable
+public sealed partial class Font : IDisposable, Ttf.IDiposeReceiver
 {
 	private interface IUnsafeConstructorDispatch;
 
@@ -58,7 +58,7 @@ public sealed partial class Font : IDisposable
 #pragma warning restore CA1816
 #pragma warning restore IDE0079
 
-					existingFont.Dispose(forget: false);
+					existingFont.Dispose(forget: false, deregisterFromTtf: true);
 				}
 
 				existingFontRef.SetTarget(newFont);
@@ -66,6 +66,9 @@ public sealed partial class Font : IDisposable
 				return existingFontRef;
 			}
 		}
+
+		// SDL_Fonts can't be safely closed after SDL_ttf is deinitialized, so we register this instance to be informed of when that happens.
+		Ttf.TryRegisterDisposable(this); // Should we check the result of this call and throw if it fails? I'm pretty sure it can only fail if we try to register a null reference.
 	}
 
 	/// <exception cref="SdlException">The <see cref="Font"/> could not be created (check <see cref="Error.TryGet(out string?)"/> for more information)</exception>
@@ -636,7 +639,7 @@ public sealed partial class Font : IDisposable
 	{ }
 
 	/// <inheritdoc/>
-	~Font() => Dispose(forget: true);
+	~Font() => Dispose(forget: true, deregisterFromTtf: true);
 
 	/// <summary>
 	/// Gets the offset from the baseline to the top of this font,
@@ -1437,13 +1440,20 @@ public sealed partial class Font : IDisposable
 	public void Dispose()
 	{
 		GC.SuppressFinalize(this);
-		Dispose(forget: true);
+		Dispose(forget: true, deregisterFromTtf: true);
 	}
 
-	private void Dispose(bool forget)
+	private void Dispose(bool forget, bool deregisterFromTtf)
 	{
 		unsafe
 		{
+			if (deregisterFromTtf)
+			{
+				// If we're here, we probably successfully came to dispose this instance before SDL_ttf is deinitialized,
+				// so we should deregister this instance from the tracking.
+				Ttf.TryDeregisterDisposable(this); // We don't need to check the return value. If it fails, it just means we were already deregistered, which is fine.
+			}
+
 			if (mFont is not null)
 			{
 				if (forget)
@@ -1455,6 +1465,12 @@ public sealed partial class Font : IDisposable
 				mFont = null;
 			}
 		}
+	}
+
+	void Ttf.IDiposeReceiver.DisposeFromTtf()
+	{
+		// SDL_Fonts can't be safely closed after SDL_ttf is deinitialized, so we do that right before that happens.
+		Dispose(forget: true, deregisterFromTtf: false); // Remember to NOT deregister here!
 	}
 
 	/// <summary>
