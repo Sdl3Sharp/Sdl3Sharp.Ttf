@@ -4,7 +4,7 @@
 
         <PackageId>Sdl3Sharp.Ttf</PackageId>
         <VersionPrefix>0.0.1</VersionPrefix>
-        <VersionSuffix>alpha.2</VersionSuffix>
+        <VersionSuffix>alpha.3</VersionSuffix>
         <Description>SDL3#'s SDL TTF bindings</Description>
         <Authors>Felix Rüdiger</Authors>
 
