@@ -15,7 +15,7 @@
 
         <!-- -->
 
-        <Sdl3SharpVersion>0.0.2-alpha.3</Sdl3SharpVersion>
+        <Sdl3SharpVersion>0.0.2-alpha.4</Sdl3SharpVersion>
     </PropertyGroup>
 
     <ItemGroup>
