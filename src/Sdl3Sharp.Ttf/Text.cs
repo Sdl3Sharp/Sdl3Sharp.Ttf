@@ -530,7 +530,7 @@ public sealed partial class Text : IDisposable
 				return TTF_GetTextProperties(mText) switch
 				{
 					0 => null,
-					var id => Properties.GetOrCreate(sdl: null, id)
+					var id => Properties.GetOrCreate(id, registerWithSdl: false)
 				};
 			}
 		} 

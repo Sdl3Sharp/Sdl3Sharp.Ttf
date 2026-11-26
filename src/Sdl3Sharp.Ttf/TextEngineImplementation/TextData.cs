@@ -179,7 +179,7 @@ public sealed partial class TextData
 				return Target->Props switch
 				{
 					0 => null,
-					var id => Properties.GetOrCreate(sdl: null, id)
+					var id => Properties.GetOrCreate(id, registerWithSdl: false)
 				};
 			}
 		}

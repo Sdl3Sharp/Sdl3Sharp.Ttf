@@ -1234,7 +1234,7 @@ public sealed partial class Font : IDisposable, Ttf.IDiposeReceiver
 				return TTF_GetFontProperties(mFont) switch
 				{
 					0 => null,
-					var id => Properties.GetOrCreate(sdl: null, id)
+					var id => Properties.GetOrCreate(id, registerWithSdl: false)
 				};
 			}
 		}
