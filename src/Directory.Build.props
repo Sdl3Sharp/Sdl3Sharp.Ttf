@@ -4,7 +4,7 @@
 
         <PackageId>Sdl3Sharp.Ttf</PackageId>
         <VersionPrefix>0.0.1</VersionPrefix>
-        <VersionSuffix>alpha.3</VersionSuffix>
+        <VersionSuffix>alpha.4</VersionSuffix>
         <Description>SDL3#'s SDL TTF bindings</Description>
         <Authors>Felix Rüdiger</Authors>
 
@@ -15,7 +15,7 @@
 
         <!-- -->
 
-        <Sdl3SharpVersion>0.0.2-alpha.4</Sdl3SharpVersion>
+        <Sdl3SharpVersion>0.0.2-alpha.5</Sdl3SharpVersion>
     </PropertyGroup>
 
     <ItemGroup>
